@@ -9,6 +9,9 @@
 
 #include "RRD.h"
 
+/**
+ * Konstruktor - privatni. Trida je staticka.
+ */
 RRD::RRD() {
 }
 
@@ -37,12 +40,21 @@ void RRD::create() {
     printf("%s\n", rrd_get_error());
 }
 
+/**
+ Pripravi prostredi pro volani funkci RRD knihovny.
+ */
 void RRD::prepare() {
     optind = 1;
     opterr = 0;
     rrd_clear_error();
 }
 
+/**
+ * Vycisti zbytek pole argumentu od bordelu.
+ * 
+ * @param argc pocet platnych argumentu
+ * @param argv pole argumentu
+ */
 void RRD::cleanRest(int argc, const char** argv) {
     for (int i = argc; i < MAX_ARGV; i++)
         argv[i] = "";
