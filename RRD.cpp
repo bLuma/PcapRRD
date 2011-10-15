@@ -21,23 +21,49 @@ RRD::RRD(const RRD& orig) {
 RRD::~RRD() {
 }
 
-void RRD::create() {
-    prepare();
-    
+bool RRD::create(string filename/*, dbtype type */) {   
     int argc = 0;
     const char* argv[MAX_ARGV];
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
-    argv[argc++] = "test.rrd";
+    argv[argc++] = filename.c_str();
     argv[argc++] = "--step";
     argv[argc++] = "5";
     argv[argc++] = "DS:data:DERIVE:300:0:U";
     argv[argc++] = "RRA:AVERAGE:0.5:1:100";
     cleanRest(argc, argv);
         
+    pthread_mutex_lock(&m_mutex);
+    prepare();    
     int res = rrd_create(argc, const_cast<char**>(argv));
-    printf("%i\n", res);
-    printf("%s\n", rrd_get_error());
+    pthread_mutex_unlock(&m_mutex);
+    
+    return !res;
+}
+
+bool RRD::update(string filename, time_t time, unsigned int cnt, unsigned int* datasets) {
+    int argc = 0;
+    const char* argv[MAX_ARGV];
+    argv[argc++] = "rrd_update";
+    //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
+    argv[argc++] = filename.c_str();
+    
+    ostringstream oss;
+    oss << time;
+    for (int i = 0; i < cnt; i++) {
+        oss << ":" << *datasets;
+        datasets++;
+    }
+
+    argv[argc++] = oss.str().c_str();
+    cleanRest(argc, argv);
+        
+    pthread_mutex_lock(&m_mutex);
+    prepare();    
+    int res = rrd_update(argc, const_cast<char**>(argv));
+    pthread_mutex_unlock(&m_mutex);
+    
+    return !res; 
 }
 
 /**
@@ -46,6 +72,7 @@ void RRD::create() {
 void RRD::prepare() {
     optind = 1;
     opterr = 0;
+    
     rrd_clear_error();
 }
 
