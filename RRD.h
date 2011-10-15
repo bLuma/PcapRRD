@@ -8,14 +8,7 @@
 #ifndef RRD_H
 #define	RRD_H
 
-#include <rrd.h>
-#include <time.h>
-#include <sstream>
-#include <string>
-#include <pthread.h>
-
-using std::string;
-using std::ostringstream;
+#include "common.h"
 
 #define MAX_ARGV 255
 

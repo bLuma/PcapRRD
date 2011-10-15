@@ -5,8 +5,6 @@
  * Created on 15. říjen 2011, 12:53
  */
 
-#include <pcap/pcap.h>
-
 #include "RRD.h"
 
 pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -17,9 +15,17 @@ pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
 RRD::RRD() {
 }
 
+/**
+ * Kopirovaci konstruktor.
+ * 
+ * @param orig instance RRD
+ */
 RRD::RRD(const RRD& orig) {
 }
 
+/**
+ * Destruktor
+ */
 RRD::~RRD() {
 }
 
