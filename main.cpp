@@ -6,7 +6,6 @@
  */
 
 #include <cstdlib>
-#include <pcap.h>
 #include "RRD.h"
 
 using namespace std;

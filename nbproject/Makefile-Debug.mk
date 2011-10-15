@@ -21,7 +21,7 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux-x86
+CND_PLATFORM=Cygwin-Windows
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -56,11 +56,11 @@ LDLIBSOPTIONS=/usr/lib/librrd.a -lpcap
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd: /usr/lib/librrd.a
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd.exe: /usr/lib/librrd.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
@@ -80,7 +80,7 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd.exe
 
 # Subprojects
 .clean-subprojects:
