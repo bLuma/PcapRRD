@@ -16,7 +16,8 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    RRD::create();
+    RRD::create("test.file.rrd");
+    RRD::update("test.file.rrd", time(NULL), 2, MAKE_VAL_PAIR(1,2));
     return 0;
 }
 
