@@ -48,9 +48,18 @@ GPRINT:vname:CF:format (deprecated)
 STACK:vname#color[:legend] (deprecated)
  */
 
-typedef unsigned long long int uint64;
-#define MAKE_VAL_PAIR(a, b) &(uint64 tVals = uint64(uint64(a) << 32 | b))
+#define MAKE_VAL_PAIR(a, b) \
+        unsigned int tValsDum[2]; \
+        tValsDum[0] = (unsigned int)(a); \
+        tValsDum[1] = (unsigned int)(b);
 
+#define GET_VAL_PAIR \
+        tValsDum
+
+/**
+ * Trida slouzici k manipulaci s RRD databazemi. Vyuziva C API 
+ * knihovny librrd.
+ */
 class RRD {
 private:
     RRD();
@@ -66,7 +75,10 @@ private:
     static void prepare();
     static void cleanRest(int argc, const char** argv);
     
-    static pthread_mutex_t m_mutex = PTHREAD_MUTEX_INITIALIZER;
+    /**
+     * Mutex pro vylucny pristup k RRD db.
+     */
+    static pthread_mutex_t m_mutex;
 };
 
 #endif	/* RRD_H */

@@ -9,8 +9,10 @@
 
 #include "RRD.h"
 
+pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /**
- * Konstruktor - privatni. Trida je staticka.
+ * Konstruktor privatni, trida je staticka.
  */
 RRD::RRD() {
 }
@@ -21,12 +23,18 @@ RRD::RRD(const RRD& orig) {
 RRD::~RRD() {
 }
 
-bool RRD::create(string filename/*, dbtype type */) {   
+/**
+ * Vytvori novou RRD databazi.
+ * 
+ * @param filename nazev databaze
+ * @return true pri uspechu vytvoreni db
+ */
+bool RRD::create(string dbname/*, dbtype type */) {   
     int argc = 0;
     const char* argv[MAX_ARGV];
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
-    argv[argc++] = filename.c_str();
+    argv[argc++] = (dbname + ".rrd").c_str();
     argv[argc++] = "--step";
     argv[argc++] = "5";
     argv[argc++] = "DS:data:DERIVE:300:0:U";
@@ -41,12 +49,21 @@ bool RRD::create(string filename/*, dbtype type */) {
     return !res;
 }
 
-bool RRD::update(string filename, time_t time, unsigned int cnt, unsigned int* datasets) {
+/**
+ * Aktualizuje data v RRD databazi.
+ * 
+ * @param dbname nazev databaze
+ * @param time casova znacka
+ * @param cnt pocet hodnot v DB
+ * @param datasets hodnoty jednotlivych polozek v DB
+ * @return true pri uspechu aktualizace dat
+ */
+bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* datasets) {
     int argc = 0;
     const char* argv[MAX_ARGV];
     argv[argc++] = "rrd_update";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
-    argv[argc++] = filename.c_str();
+    argv[argc++] = (dbname + ".rrd").c_str();
     
     ostringstream oss;
     oss << time;
