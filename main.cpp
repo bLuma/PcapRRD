@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <pcap.h>
 #include "RRD.h"
-#include <pthread.h>
 
 using namespace std;
 
@@ -17,7 +16,10 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     RRD::create("test.file.rrd");
-    RRD::update("test.file.rrd", time(NULL), 2, MAKE_VAL_PAIR(1,2));
+    
+    MAKE_VAL_PAIR(10, 20);
+    RRD::update("test.file.rrd", time(NULL), 2, GET_VAL_PAIR);
+    
     return 0;
 }
 
