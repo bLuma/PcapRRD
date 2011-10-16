@@ -18,6 +18,7 @@
 #include <ctime>
 
 #include <map>
+// prozatim nevyuziti unordered_map pro problemy s IDE
 #define unordered_map map
 
 using std::string;
