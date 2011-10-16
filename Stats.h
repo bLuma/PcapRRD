@@ -10,18 +10,27 @@
 
 #include "common.h"
 
+/**
+ * Typ statistiky - download, upload.
+ */
 enum StatType {
     ST_DOWNLOAD,
     ST_UPLOAD,
     ST_MAX
 };
 
+/**
+ * Typ protokolu ctvrte vrstvy.
+ */
 enum ServiceType {
     SR_TCP,
     SR_UDP,
     SR_MAX
 };
 
+/**
+ * Struktura pro uchovani statistik. 
+ */
 struct StatsHolder {
     unsigned long int statistics[ST_MAX];
     
@@ -31,6 +40,9 @@ struct StatsHolder {
     }
 };
 
+/**
+ * Struktura pro adresaci ctvrte vrstvy.
+ */
 struct ServiceAddrBinary {
     IpAddrBinary host;
     ServiceType stype;
@@ -72,7 +84,14 @@ public:
     // pull
     
 private:
+    /**
+     * Uchovava statistiky jednotlivych hostu.
+     */
     HostMap m_hosts;
+    
+    /**
+     * Uchovava statistiky sluzeb na L4.
+     */
     ServiceMap m_services;
 };
 
