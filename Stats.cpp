@@ -16,3 +16,6 @@ Stats::Stats(const Stats& orig) {
 Stats::~Stats() {
 }
 
+void AddCounter(IpAddrBinary host, StatType type, unsigned int value) {
+
+}

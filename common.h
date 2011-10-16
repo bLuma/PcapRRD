@@ -17,8 +17,11 @@
 
 #include <ctime>
 
+#include <unordered_map>
+
 using std::string;
 using std::ostringstream;
+using std::unordered_map;
         
 
 #endif	/* COMMON_H */

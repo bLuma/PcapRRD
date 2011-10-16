@@ -41,10 +41,17 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
     argv[argc++] = (dbname + ".rrd").c_str();
+    
     argv[argc++] = "--step";
     argv[argc++] = "5";
-    argv[argc++] = "DS:data:DERIVE:300:0:U";
-    argv[argc++] = "RRA:AVERAGE:0.5:1:100";
+    
+    argv[argc++] = "DS:download:DERIVE:300:0:U";
+    argv[argc++] = "DS:upload:DERIVE:300:0:U";
+    
+    argv[argc++] = "RRA:AVERAGE:0.5:1:86400";   // 5s - den
+    argv[argc++] = "RRA:AVERAGE:0.5:12:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:AVERAGE:0.5:60:105120"; // 5m - 1 rok
+    argv[argc++] = "RRA:AVERAGE:0.5:720:35040"; // 1h - 4 roky
     cleanRest(argc, argv);
         
     pthread_mutex_lock(&m_mutex);
