@@ -17,12 +17,16 @@
 
 #include <ctime>
 
-#include <unordered_map>
+#include <map>
+#define unordered_map map
 
 using std::string;
 using std::ostringstream;
 using std::unordered_map;
+using std::make_pair;
         
+typedef unsigned long IpAddrBinary;
+typedef unsigned long long uint64;
 
 #endif	/* COMMON_H */
 

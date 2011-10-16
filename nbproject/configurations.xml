@@ -41,12 +41,10 @@
         <compilerSet>default</compilerSet>
       </toolsSet>
       <compileType>
-        <linkerTool>
-          <linkerLibItems>
-            <linkerLibFileItem>/usr/lib/librrd.a</linkerLibFileItem>
-            <linkerLibLibItem>pcap</linkerLibLibItem>
-          </linkerLibItems>
-        </linkerTool>
+        <ccTool>
+          <commandLine>-std=c++0x</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
       </compileType>
     </conf>
     <conf name="Release" type="1">
@@ -67,6 +65,24 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+      </compileType>
+    </conf>
+    <conf name="Debug_Linux" type="1">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <commandLine>-std=c++0x</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>rrd</linkerLibLibItem>
+            <linkerLibLibItem>pcap</linkerLibLibItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
     </conf>
   </confs>
