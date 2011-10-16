@@ -5,8 +5,6 @@
  * Created on 15. říjen 2011, 20:07
  */
 
-#include <string>
-
 #include "Stats.h"
 #include "RRD.h"
 
@@ -34,12 +32,23 @@ string convertServiceAddrBinaryToString(ServiceAddrBinary addr) {
     return oss.str();
 }
 
+/**
+ * Konstruktor.
+ */
 Stats::Stats() {
 }
 
+/**
+ * Destruktor.
+ * 
+ * @param orig reference
+ */
 Stats::Stats(const Stats& orig) {
 }
 
+/**
+ * Destruktor
+ */
 Stats::~Stats() {
 }
 

@@ -62,6 +62,7 @@ struct ServiceAddrBinary {
     
 };
 
+/// Mapy pro ulozeni statistik
 typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
 typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;
 
@@ -96,4 +97,3 @@ private:
 };
 
 #endif	/* STATS_H */
-

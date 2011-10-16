@@ -8,8 +8,6 @@
 #ifndef COMMON_H
 #define	COMMON_H
 
-#include <pcap.h>
-#include <rrd.h>
 #include <pthread.h>
 
 #include <string>

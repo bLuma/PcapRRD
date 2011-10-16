@@ -42,6 +42,10 @@
       </toolsSet>
       <compileType>
         <ccTool>
+          <incDir>
+            <pElem>../winpcap/Include</pElem>
+            <pElem>../rrdtool.src/src</pElem>
+          </incDir>
           <commandLine>-std=c++0x</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>

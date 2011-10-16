@@ -5,6 +5,7 @@
  * Created on 15. říjen 2011, 12:53
  */
 
+#include <rrd.h>
 #include "RRD.h"
 
 pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
