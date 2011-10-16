@@ -7,6 +7,7 @@
 
 #include <cstdlib>
 #include "RRD.h"
+#include "Stats.h"
 
 using namespace std;
 
@@ -14,10 +15,15 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    RRD::create("test.file.rrd");
+    Stats stat;
+    //stat.AddCounter(0x000000FF, ST_DOWNLOAD, 100);
+    stat.AddCounterService(0xFF, SR_TCP, 10, ST_DOWNLOAD, 100);
+    stat.AddCounterService(0x10, SR_UDP, 10, ST_DOWNLOAD, 100);
     
-    MAKE_VAL_PAIR(10, 20);
-    RRD::update("test.file.rrd", time(NULL), 2, GET_VAL_PAIR);
+    //RRD::create("test.file.rrd");
+    
+    //MAKE_VAL_PAIR(10, 20);
+    //RRD::update("test.file.rrd", time(NULL), 2, GET_VAL_PAIR);
     
     return 0;
 }

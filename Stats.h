@@ -17,28 +17,44 @@ enum StatType {
 };
 
 enum ServiceType {
-    SRT_TCP,
-    SRT_UDP,
-    SRT_MAX
-            
+    SR_TCP,
+    SR_UDP,
+    SR_MAX
 };
-
-typedef unsigned long IpAddrBinary;
-
-typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
-typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;
-
 
 struct StatsHolder {
     unsigned long int statistics[ST_MAX];
+    
+    StatsHolder() {
+        statistics[ST_DOWNLOAD] = 0;
+        statistics[ST_UPLOAD] = 0;
+    }
 };
 
 struct ServiceAddrBinary {
     IpAddrBinary host;
     ServiceType stype;
     unsigned short port;
+    
+    ServiceAddrBinary(IpAddrBinary h, ServiceType s, unsigned short p)
+            : host(h), stype(s), port(p) {
+    }
+    
+    uint64 keyVal() const {
+        return uint64(uint64(host) << 20) | uint64(stype << 16) | uint64(port);
+    }
+    
+    bool operator<(const ServiceAddrBinary& ref) const {
+        return keyVal() < ref.keyVal();
+    }
+    
 };
 
+typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
+typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;
+
+string convertIpAddrBinaryToString(IpAddrBinary addr);
+string convertServiceAddrBinaryToString(ServiceAddrBinary addr);
 
 /**
  * Stats uchovava souhrnne informace ze zachycenych paketu.
@@ -51,7 +67,7 @@ public:
     
     // push
     void AddCounter(IpAddrBinary host, StatType type, unsigned int value);
-    //void AddCounterService(IpAddrBinary host, ServiceType stype, unsigned short port, StatType type, unsigned int value);
+    void AddCounterService(IpAddrBinary host, ServiceType stype, unsigned short port, StatType type, unsigned int value);
     
     // pull
     

@@ -80,7 +80,7 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
     
     ostringstream oss;
     oss << time;
-    for (int i = 0; i < cnt; i++) {
+    for (unsigned int i = 0; i < cnt; i++) {
         oss << ":" << *datasets;
         datasets++;
     }
