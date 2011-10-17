@@ -11,6 +11,10 @@
 #include <pcap.h>
 #include "common.h"
 
+#ifndef PCAP_OPENFLAG_PROMISCUOUS
+#define PCAP_OPENFLAG_PROMISCUOUS 1
+#endif
+
 /**
  * Trida slouzici pro zachytavani a analyzu paketu. Trida automaticky
  * vytvari nove zachytavaci vlakno, ve kterm nasledne bezi i analyza.
@@ -23,11 +27,11 @@ public:
     
     bool setFilter(string filter);
     bool setInterface(string interface);
-    //void startCapture();
+    bool startCapture();
     
 private:
 
-    // static void processPacket();
+    static void captureThread(void* packetLogger);
     // static void analyzeL2();
     // static void analyzeL3();
     // static void analyzeL4();
@@ -41,7 +45,26 @@ private:
      * Seznam vsech zarizeni.
      */
     pcap_if_t* m_devices;
+    
+    /**
+     * Handle zachytavaciho zarizeni.
+     */
+    pcap_t* m_handle;
+    
+    /**
+     * Zachytavaci filtr.
+     */
+    string m_filter;
+    
+    /**
+     * Zachytavaci vlakno.
+     */
+    pthread_t* m_thread;
+    
+    /**
+     * Buffer na chybova hlaseni.
+     */
+    char m_errbuf[PCAP_ERRBUF_SIZE];
 };
 
 #endif	/* PACKETLOGGER_H */
-
