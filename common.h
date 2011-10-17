@@ -26,6 +26,7 @@ using std::unordered_map;
 using std::make_pair;
 
 using std::cout;
+using std::cerr;
 using std::endl;
         
 typedef unsigned long IpAddrBinary;
