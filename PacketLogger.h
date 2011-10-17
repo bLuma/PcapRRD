@@ -11,6 +11,7 @@
 #include <pcap.h>
 #include "common.h"
 
+// windows fix
 #ifndef PCAP_OPENFLAG_PROMISCUOUS
 #define PCAP_OPENFLAG_PROMISCUOUS 1
 #endif
@@ -30,11 +31,7 @@ public:
     bool startCapture();
     
 private:
-
     static void captureThread(void* packetLogger);
-    // static void analyzeL2();
-    // static void analyzeL3();
-    // static void analyzeL4();
     
     /**
      * Zachytavaci zarizeni.

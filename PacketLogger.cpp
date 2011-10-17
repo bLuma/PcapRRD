@@ -68,6 +68,11 @@ bool PacketLogger::setFilter(string filter) {
     return true;
 }
 
+/**
+ * Zahaji zachytavani na zarizeni.
+ * 
+ * @return true pri uspechu
+ */
 bool PacketLogger::startCapture() {
     m_handle = pcap_open_live(m_device->name, 65536, PCAP_OPENFLAG_PROMISCUOUS, 1000, m_errbuf);
     if (m_handle == NULL)
@@ -89,6 +94,11 @@ bool PacketLogger::startCapture() {
     return true;
 }
 
+/**
+ * Metoda ve ktere bezi zachytavaci vlakno.
+ * 
+ * @param packetLogger instance packet loggeru
+ */
 void PacketLogger::captureThread(void* packetLogger) {
     PacketLogger* instance = reinterpret_cast<PacketLogger*>(packetLogger);
     int res;
