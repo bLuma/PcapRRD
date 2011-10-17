@@ -117,5 +117,3 @@ void RRD::cleanRest(int argc, const char** argv) {
     for (int i = argc; i < MAX_ARGV; i++)
         argv[i] = "";
 }
-
-

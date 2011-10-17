@@ -11,6 +11,8 @@
  * Konstruktor
  */
 PacketLogger::PacketLogger() {
+    m_device = NULL;
+    m_devices = NULL;
 }
 
 /**
@@ -25,6 +27,11 @@ PacketLogger::PacketLogger(const PacketLogger& orig) {
  * Destruktor.
  */
 PacketLogger::~PacketLogger() {
+    pcap_close(m_device);
+    m_device = NULL;
+    
+    if (m_devices)
+        pcap_freealldevs(m_devices);
 }
 
 /**
@@ -35,9 +42,8 @@ PacketLogger::~PacketLogger() {
  */
 bool PacketLogger::setInterface(string interface) {
     pcap_if_t* dev;
-    char errbuf[PCAP_ERRBUF_SIZE];
     
-    if (pcap_findalldevs(&m_devices, errbuf) < 0)
+    if (pcap_findalldevs(&m_devices, m_errbuf) < 0)
         return false;
     
     for (dev = m_devices; dev != NULL; dev = dev->next) {
@@ -58,13 +64,38 @@ bool PacketLogger::setInterface(string interface) {
  * @return true pri uspesne kompilaci a aplikaci filtru
  */
 bool PacketLogger::setFilter(string filter) {
+    m_filter = filter;   
+    return true;
+}
+
+bool PacketLogger::startCapture() {
+    m_handle = pcap_open_live(m_device->name, 65536, PCAP_OPENFLAG_PROMISCUOUS, 1000, m_errbuf);
+    if (m_handle == NULL)
+        return false;
+ 
+    // TODO: bpf resource release?
     bpf_program bpf;
     
-    if (pcap_compile((pcap_t*)m_device, &bpf, filter.c_str(), 1, 0xFFFFFF) < 0)
+    if (pcap_compile(m_handle, &bpf, m_filter.c_str(), 1, 0xFFFFFF) < 0)
         return false;
     
-    if (pcap_setfilter((pcap_t*)m_device, &bpf) < 0)
+    if (pcap_setfilter(m_handle, &bpf) < 0)
+        return false;        
+    
+    pthread_attr_t attr;
+    if (pthread_create(m_thread, &attr, &PacketLogger::captureThread, reinterpret_cast<void*>(this)) != 0)
         return false;
     
     return true;
+}
+
+void PacketLogger::captureThread(void* packetLogger) {
+    PacketLogger* instance = reinterpret_cast<PacketLogger*>(packetLogger);
+    int res;
+    pcap_pkthdr* header;
+    unsigned char* data;
+    
+    while ((res = pcap_next_ex(instance->m_handle, &header, &data)) >= 0) {
+        cout << "Catched packet " << header->ts << " " << header->caplen;
+    }
 }

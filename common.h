@@ -32,4 +32,3 @@ typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;
 
 #endif	/* COMMON_H */
-
