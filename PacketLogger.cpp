@@ -5,6 +5,8 @@
  * Created on 15. říjen 2011, 19:58
  */
 
+#include <stdlib.h>
+
 #include "PacketLogger.h"
 
 /**
@@ -13,6 +15,7 @@
 PacketLogger::PacketLogger() {
     m_device = NULL;
     m_devices = NULL;
+    m_handle = NULL;
 }
 
 /**
@@ -27,7 +30,7 @@ PacketLogger::PacketLogger(const PacketLogger& orig) {
  * Destruktor.
  */
 PacketLogger::~PacketLogger() {
-    pcap_close(m_device);
+    //pcap_close(m_handle);
     m_device = NULL;
     
     if (m_devices)
@@ -75,22 +78,25 @@ bool PacketLogger::setFilter(string filter) {
  */
 bool PacketLogger::startCapture() {
     m_handle = pcap_open_live(m_device->name, 65536, PCAP_OPENFLAG_PROMISCUOUS, 1000, m_errbuf);
-    if (m_handle == NULL)
+    if (m_handle == NULL) {
+        cerr << m_errbuf << endl;
         return false;
- 
-    // TODO: bpf resource release?
-    bpf_program bpf;
+    }
+
+    if (!m_filter.empty()) {
+        // TODO: bpf resource release?
+        bpf_program bpf;
     
-    if (pcap_compile(m_handle, &bpf, m_filter.c_str(), 1, 0xFFFFFF) < 0)
+        if (pcap_compile(m_handle, &bpf, m_filter.c_str(), 1, 0xFFFFFF) < 0)
+            return false;
+    
+        if (pcap_setfilter(m_handle, &bpf) < 0)
+            return false;        
+    }
+
+    if (pthread_create(&m_thread, NULL, &PacketLogger::captureThread, reinterpret_cast<void*>(this)) != 0)
         return false;
-    
-    if (pcap_setfilter(m_handle, &bpf) < 0)
-        return false;        
-    
-    pthread_attr_t attr;
-    if (pthread_create(m_thread, &attr, &PacketLogger::captureThread, reinterpret_cast<void*>(this)) != 0)
-        return false;
-    
+
     return true;
 }
 
@@ -99,13 +105,19 @@ bool PacketLogger::startCapture() {
  * 
  * @param packetLogger instance packet loggeru
  */
-void PacketLogger::captureThread(void* packetLogger) {
+void* PacketLogger::captureThread(void* packetLogger) {
     PacketLogger* instance = reinterpret_cast<PacketLogger*>(packetLogger);
     int res;
     pcap_pkthdr* header;
-    unsigned char* data;
+    const unsigned char* data;
     
     while ((res = pcap_next_ex(instance->m_handle, &header, &data)) >= 0) {
-        cout << "Catched packet " << header->ts << " " << header->caplen;
+        // timeout
+        if (res == 0)
+            continue;
+        
+        cout << res << " Catched packet " << header->ts.tv_sec << " " << header->ts.tv_usec << " " << header->caplen << endl;
     }
+    
+    return NULL;
 }

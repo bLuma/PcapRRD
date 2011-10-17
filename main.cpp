@@ -17,7 +17,9 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     PacketLogger pl;
-    pl.setInterface(0);
+    cout << (pl.setInterface("eth0") ? "int ok" : "int fa") << endl;
+    cout << (pl.startCapture() ? "ca ok" : "ca fa") << endl;
+    pl.join();
     
     //Stats stat;
     //stat.AddCounter(0x000000FF, ST_DOWNLOAD, 100);

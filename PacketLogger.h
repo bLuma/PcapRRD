@@ -30,8 +30,12 @@ public:
     bool setInterface(string interface);
     bool startCapture();
     
+    void join() {
+        pthread_join(m_thread, NULL);
+    }
+    
 private:
-    static void captureThread(void* packetLogger);
+    static void* captureThread(void* packetLogger);
     
     /**
      * Zachytavaci zarizeni.
@@ -56,7 +60,7 @@ private:
     /**
      * Zachytavaci vlakno.
      */
-    pthread_t* m_thread;
+    pthread_t m_thread;
     
     /**
      * Buffer na chybova hlaseni.
