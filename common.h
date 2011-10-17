@@ -12,6 +12,7 @@
 
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #include <ctime>
 
@@ -23,6 +24,9 @@ using std::string;
 using std::ostringstream;
 using std::unordered_map;
 using std::make_pair;
+
+using std::cout;
+using std::endl;
         
 typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;

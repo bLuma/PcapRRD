@@ -20,8 +20,8 @@ public:
     PacketLogger(const PacketLogger& orig);
     virtual ~PacketLogger();
     
-    //void setFilter(string filter);
-    //void setInterface(int interface);
+    bool setFilter(string filter);
+    void setInterface(int interface);
     //void startCapture();
     
 private:
@@ -30,6 +30,11 @@ private:
     // static void analyzeL2();
     // static void analyzeL3();
     // static void analyzeL4();
+    
+    /**
+     * Zachytavaci zarizeni.
+     */
+    pcap_t* m_device;
     
 };
 
