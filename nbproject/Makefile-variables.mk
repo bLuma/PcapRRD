@@ -7,29 +7,29 @@ CND_BASEDIR=`pwd`
 CND_BUILDDIR=build
 CND_DISTDIR=dist
 # Debug configuration
-CND_PLATFORM_Debug=Cygwin-Windows
-CND_ARTIFACT_DIR_Debug=dist/Debug/Cygwin-Windows
+CND_PLATFORM_Debug=GNU-Windows
+CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Windows
 CND_ARTIFACT_NAME_Debug=pcaprrd
-CND_ARTIFACT_PATH_Debug=dist/Debug/Cygwin-Windows/pcaprrd
-CND_PACKAGE_DIR_Debug=dist/Debug/Cygwin-Windows/package
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Windows/pcaprrd
+CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Windows/package
 CND_PACKAGE_NAME_Debug=pcaprrd.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/Cygwin-Windows/package/pcaprrd.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Windows/package/pcaprrd.tar
 # Release configuration
-CND_PLATFORM_Release=Cygwin-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
+CND_PLATFORM_Release=GNU-Windows
+CND_ARTIFACT_DIR_Release=dist/Release/GNU-Windows
 CND_ARTIFACT_NAME_Release=pcaprrd
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/pcaprrd
-CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Windows/pcaprrd
+CND_PACKAGE_DIR_Release=dist/Release/GNU-Windows/package
 CND_PACKAGE_NAME_Release=pcaprrd.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/pcaprrd.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Windows/package/pcaprrd.tar
 # Debug_Linux configuration
-CND_PLATFORM_Debug_Linux=Cygwin-Linux-x86
-CND_ARTIFACT_DIR_Debug_Linux=dist/Debug_Linux/Cygwin-Linux-x86
+CND_PLATFORM_Debug_Linux=GNU-Linux-x86
+CND_ARTIFACT_DIR_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86
 CND_ARTIFACT_NAME_Debug_Linux=pcaprrd
-CND_ARTIFACT_PATH_Debug_Linux=dist/Debug_Linux/Cygwin-Linux-x86/pcaprrd
-CND_PACKAGE_DIR_Debug_Linux=dist/Debug_Linux/Cygwin-Linux-x86/package
+CND_ARTIFACT_PATH_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86/pcaprrd
+CND_PACKAGE_DIR_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86/package
 CND_PACKAGE_NAME_Debug_Linux=pcaprrd.tar
-CND_PACKAGE_PATH_Debug_Linux=dist/Debug_Linux/Cygwin-Linux-x86/package/pcaprrd.tar
+CND_PACKAGE_PATH_Debug_Linux=dist/Debug_Linux/GNU-Linux-x86/package/pcaprrd.tar
 #
 # include compiler specific variables
 #
