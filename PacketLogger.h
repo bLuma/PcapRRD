@@ -8,6 +8,7 @@
 #ifndef PACKETLOGGER_H
 #define	PACKETLOGGER_H
 
+#include <pcap.h>
 #include "common.h"
 
 /**
@@ -21,7 +22,7 @@ public:
     virtual ~PacketLogger();
     
     bool setFilter(string filter);
-    void setInterface(int interface);
+    bool setInterface(string interface);
     //void startCapture();
     
 private:
@@ -34,8 +35,12 @@ private:
     /**
      * Zachytavaci zarizeni.
      */
-    pcap_t* m_device;
+    pcap_if_t* m_device;
     
+    /**
+     * Seznam vsech zarizeni.
+     */
+    pcap_if_t* m_devices;
 };
 
 #endif	/* PACKETLOGGER_H */
