@@ -21,6 +21,10 @@
 #define PROTO_L2_ARP  0x0806
 #define PROTO_L2_RARP 0x8035
 
+#define PROTO_L3_TCP  0x06
+#define PROTO_L3_UDP  0x11
+#define PROTO_L3_ICMP 0x01
+
 class PacketAnalyzer {
 public:
     PacketAnalyzer(pcap_pkthdr* header, const unsigned char* data);
@@ -33,6 +37,10 @@ private:
     inline void doL2();
     inline void doL3();
     inline void doL4();
+    
+    inline bool isIpv4() {
+        return m_protoL3 == PROTO_L2_IPV4 && m_dataL3;
+    }
 
     pcap_pkthdr* m_header;
     const unsigned char* m_data;
@@ -42,6 +50,9 @@ private:
     
     unsigned short m_protoL4;
     const unsigned char* m_dataL4;
+    
+    const unsigned char* m_source;
+    const unsigned char* m_destination;
 };
 
 #endif	/* PACKETANALYZER_H */

@@ -4,10 +4,12 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>PacketAnalyzer.h</itemPath>
       <itemPath>PacketLogger.h</itemPath>
       <itemPath>RRD.h</itemPath>
       <itemPath>Stats.h</itemPath>
       <itemPath>common.h</itemPath>
+      <itemPath>netstruct.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -16,6 +18,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>PacketAnalyzer.cpp</itemPath>
       <itemPath>PacketLogger.cpp</itemPath>
       <itemPath>RRD.cpp</itemPath>
       <itemPath>Stats.cpp</itemPath>
@@ -47,6 +50,9 @@
             <pElem>../rrdtool.src/src</pElem>
           </incDir>
           <commandLine>-std=c++0x</commandLine>
+          <preprocessorList>
+            <Elem>DEBUG</Elem>
+          </preprocessorList>
           <warningLevel>2</warningLevel>
         </ccTool>
       </compileType>

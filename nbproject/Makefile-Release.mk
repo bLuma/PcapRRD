@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Stats.o \
 	${OBJECTDIR}/RRD.o \
+	${OBJECTDIR}/PacketAnalyzer.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/PacketLogger.o
 
@@ -73,6 +74,11 @@ ${OBJECTDIR}/RRD.o: RRD.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRD.o RRD.cpp
+
+${OBJECTDIR}/PacketAnalyzer.o: PacketAnalyzer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketAnalyzer.o PacketAnalyzer.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
