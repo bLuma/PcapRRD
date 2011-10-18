@@ -11,7 +11,6 @@
 #include <pcap.h>
 #include "common.h"
 
-// windows fix
 #ifndef PCAP_OPENFLAG_PROMISCUOUS
 #define PCAP_OPENFLAG_PROMISCUOUS 1
 #endif
