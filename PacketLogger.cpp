@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 #include "PacketLogger.h"
+#include "PacketAnalyzer.h"
 
 /**
  * Konstruktor
@@ -116,7 +117,8 @@ void* PacketLogger::captureThread(void* packetLogger) {
         if (res == 0)
             continue;
         
-        cout << res << " Catched packet " << header->ts.tv_sec << " " << header->ts.tv_usec << " " << header->caplen << endl;
+        //cout << res << " Catched packet " << header->ts.tv_sec << " " << header->ts.tv_usec << " " << header->caplen << endl;
+        PacketAnalyzer(header, data).analyze();
     }
     
     return NULL;

@@ -32,4 +32,11 @@ using std::endl;
 typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;
 
+#ifdef DEBUG
+#define DEBUGLOG(x) cerr << x << endl;
+#else
+#define DEBUGLOG(x)
+#endif
+
+
 #endif	/* COMMON_H */

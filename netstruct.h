@@ -8,7 +8,7 @@
 #ifndef NETSTRUCT_H
 #define	NETSTRUCT_H
 
-
+// struktury je nutne zabalit 1:1
 #pragma pack(push,1)
 
 struct MacAddress {
@@ -19,7 +19,7 @@ struct Ipv4Address {
     unsigned char addr[4];
 };
 
-struct LayerFrameOrPacket {
+struct LayerHeader {
     const unsigned char* getNextLayer() const = 0;
 };
 
@@ -28,7 +28,7 @@ struct LayerFrameOrPacket {
 	64–1522 octets 	
 72–1530 octets 	*/
 
-struct EthernetFrame : public LayerFrameOrPacket {
+struct EthernetHeader : public LayerHeader {
     MacAddress destination;
     MacAddress source;
     unsigned short typeOrLen;
@@ -50,7 +50,7 @@ or
 192+ 	 
 Data*/
 
-struct Ipv4Packet : public LayerFrameOrPacket {
+struct Ipv4Header : public LayerHeader {
     unsigned char verLen;
     unsigned char DSCP;
     unsigned short length;
@@ -61,13 +61,44 @@ struct Ipv4Packet : public LayerFrameOrPacket {
     unsigned short checksum;
     Ipv4Address source;
     Ipv4Address destination;
+   
+    unsigned char getLength() const {
+        return verLen & 0x0F;
+    }
     
     const unsigned char* getNextLayer() const {
-        return reinterpret_cast<const unsigned char*>(this) + ((verLen & 0x0F) * 4);
+        return reinterpret_cast<const unsigned char*>(this) + (getLength() * 4);
+    }
+};
+
+struct TcpHeader : public LayerHeader {
+    unsigned short sourcePort;
+    unsigned short destinationPort;
+    unsigned int seq;
+    unsigned int ack;
+    unsigned short flags;
+    unsigned short windowSize;
+    
+    unsigned char getDataOffset() const {
+        return reinterpret_cast<unsigned char*>(&flags) & 0xF0; 
+    }
+    
+    const unsigned char* getNextLayer() const {
+        return reinterpret_cast<const unsigned char*>(this) + (getDataOffset());
+    }
+};
+
+struct UdpHeader : public LayerHeader {
+    unsigned short sourcePort;
+    unsigned short destinationPort;
+    unsigned short length;
+    unsigned short checksum;
+    
+    const unsigned char* getNextLayer() const {
+        return reinterpret_cast<const unsigned char*>(this) + (2+2+2+2);
     }
 };
 
 #pragma pack(pop)
 
 #endif	/* NETSTRUCT_H */
-
