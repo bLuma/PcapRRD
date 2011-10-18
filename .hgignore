@@ -3,4 +3,4 @@
 \.chg\..*$
 \.rej$
 \.conflict\~$
-\nbproject\private\private.xml$
+nbproject\private\private.xml
