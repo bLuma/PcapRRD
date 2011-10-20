@@ -39,7 +39,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/PacketAnalyzer.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/PacketLogger.o \
-	${OBJECTDIR}/StatsAdapter.o
+	${OBJECTDIR}/StatsAdapter.o \
+	${OBJECTDIR}/netstruct.o
 
 
 # C Compiler Flags
@@ -95,6 +96,11 @@ ${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
+
+${OBJECTDIR}/netstruct.o: netstruct.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/netstruct.o netstruct.cpp
 
 # Subprojects
 .build-subprojects:

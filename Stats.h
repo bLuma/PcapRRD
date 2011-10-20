@@ -48,12 +48,16 @@ struct ServiceAddrBinary {
     ServiceType stype;
     unsigned short port;
     
+    ServiceAddrBinary()
+            : host(0), stype(SR_MAX), port(0) {
+    }
+    
     ServiceAddrBinary(IpAddrBinary h, ServiceType s, unsigned short p)
             : host(h), stype(s), port(p) {
     }
     
-    uint64 keyVal() const {
-        return uint64(uint64(host) << 20) | uint64(stype << 16) | uint64(port);
+    inline uint64 keyVal() const {
+        return uint64(uint64(host) << 24) | uint64(stype << 16) | uint64(port);
     }
     
     bool operator<(const ServiceAddrBinary& ref) const {
@@ -69,10 +73,13 @@ string convertServiceAddrBinaryToString(ServiceAddrBinary addr);
  * Stats uchovava souhrnne informace ze zachycenych paketu.
  */
 class Stats {
-public:
-    Stats();
-    Stats(const Stats& orig);
-    virtual ~Stats();
+public:   
+    static Stats& instance() {
+        if (!m_instance)
+            m_instance = new Stats;
+        
+        return *m_instance;
+    }
     
     // push
     void AddCounter(IpAddrBinary host, StatType type, unsigned int value);
@@ -81,6 +88,12 @@ public:
     // pull
     
 private:
+    Stats();
+    Stats(const Stats& orig);
+    virtual ~Stats();
+    
+    static Stats* m_instance;
+    
     /// Mapy pro ulozeni statistik
     typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
     typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;

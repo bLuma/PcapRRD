@@ -6,27 +6,19 @@
  */
 
 #include "StatsAdapter.h"
+#include "netstruct.h"
+#include "Stats.h"
+#include <fstream>
 
-set<unsigned short> StatsAdapter::servicePorts;
+set<unsigned short> StatsAdapter::m_servicePorts;
+set<IpAddrBinary> StatsAdapter::m_hostFilter;
+set<uint64> StatsAdapter::m_serviceFilter;
 
-struct Ipv4Addressb {
-    unsigned char addr[4];
-};
-
-ostream& operator<<(ostream& os, const Ipv4Addressb& ip) {
-    os 
-            << (int)ip.addr[0] << "."
-            << (int)ip.addr[1] << "."
-            << (int)ip.addr[2] << "."
-            << (int)ip.addr[3];
-    return os;
+bool StatsAdapter::isService(unsigned short port) {
+    return m_servicePorts.find(port) != m_servicePorts.end();
 }
 
-bool isService(unsigned short port) {
-    return StatsAdapter::servicePorts.find(port) != StatsAdapter::servicePorts.end();
-}
-
-unsigned short findServicePort(unsigned short localPort, unsigned short remotePort) {
+unsigned short StatsAdapter::findServicePort(unsigned short localPort, unsigned short remotePort) {
     if (isService(localPort))
         return localPort;
     else if (isService(remotePort))
@@ -50,10 +42,78 @@ StatsAdapter::~StatsAdapter() {
 }
 
 void StatsAdapter::callHostStat(const IpAddrBinary addr, StatType type, unsigned int value) {
+    if (m_hostFilter.find(addr) == m_hostFilter.end())
+        return;
     
+    Stats::instance().AddCounter(
+        addr,
+        type,
+        value);
 }
 
 void StatsAdapter::callServiceStat(const IpAddrBinary addr, const L3Proto protocol, unsigned short localPort, unsigned short remotePort, StatType type, unsigned int value) {
     unsigned short service = findServicePort(localPort, remotePort);
-    cout << (*((Ipv4Addressb*)&addr)) << " " << (protocol==PROTO_L3_TCP ? "TCP(" : "UDP(") << service << ") " << (type==ST_DOWNLOAD ? "<--" : "-->") << " " << value << endl; 
+    
+    ServiceAddrBinary sab;
+    sab.host = addr;
+    sab.port = service;
+    sab.stype = protocol == PROTO_L3_TCP ? SR_TCP : SR_UDP;
+    
+    //cout << hex << sab.keyVal() << dec << endl;
+    
+    if (m_serviceFilter.find(sab.keyVal()) == m_serviceFilter.end())
+        return;
+    
+    cout << (*((Ipv4Address*)&addr)) << " " << (protocol==PROTO_L3_TCP ? "TCP(" : "UDP(") << service << ") " << (type==ST_DOWNLOAD ? "<--" : "-->") << " " << value << endl; 
+    
+    Stats::instance().AddCounterService(
+        addr,
+        protocol == PROTO_L3_TCP ? SR_TCP : SR_UDP,
+        service,
+        type,
+        value);
+}
+
+void StatsAdapter::addServicePort(unsigned short port) {
+    m_servicePorts.insert(port);
+}
+
+void StatsAdapter::loadRules() {
+    ifstream file(CONFIG_PATH "rules.cfg");
+    if (!file.is_open())
+        return;
+
+    while (!file.eof() && file.good()) {
+        string line;
+        getline(file, line);
+        istringstream iss(line);
+        
+        if (file.eof() || line.empty())
+            break;
+        
+        //cout << "F:" << line.c_str() << endl;
+        
+        string type, address;
+        iss >> type >> address;
+        
+        IpAddrBinary ip = convertStringToIpAddrBinary(address);
+        
+        if (type == "H") {
+            m_hostFilter.insert(ip);
+        } else if (type == "S") {
+            ServiceAddrBinary sab;
+            sab.host = ip;
+            
+            iss >> type >> sab.port;
+            sab.stype = type == "TCP" ? SR_TCP : SR_UDP;
+
+            //cout << hex << sab.keyVal() << " <<<" << dec << endl;
+            m_serviceFilter.insert(sab.keyVal());
+            m_servicePorts.insert(sab.port);
+        } else {
+            continue;
+        }
+    }
+    
+    file.close();
 }

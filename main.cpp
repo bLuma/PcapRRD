@@ -15,9 +15,7 @@
  * 
  */
 int main(int argc, char** argv) {
-    StatsAdapter::servicePorts.insert(53);
-    StatsAdapter::servicePorts.insert(80);
-    StatsAdapter::servicePorts.insert(6667);
+    StatsAdapter::loadRules();
     
     PacketLogger pl;
 #ifdef WIN
