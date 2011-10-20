@@ -17,7 +17,13 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     PacketLogger pl;
+#ifdef WIN
+    pl.listInterfaces();
+    //pl.setFirstAvailableInterface();
+    cout << (pl.setInterface("\\Device\\NPF_{6F732E9A-EE1E-460D-ADC6-EB64EB656E76}") ? "int ok" : "int fa") << endl;
+#else
     cout << (pl.setInterface("eth0") ? "int ok" : "int fa") << endl;
+#endif
     cout << (pl.startCapture() ? "ca ok" : "ca fa") << endl;
     pl.join();
     

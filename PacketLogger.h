@@ -27,7 +27,10 @@ public:
     
     bool setFilter(string filter);
     bool setInterface(string interface);
+    void setFirstAvailableInterface();
     bool startCapture();
+    
+    void listInterfaces();
     
     void join() {
         pthread_join(m_thread, NULL);

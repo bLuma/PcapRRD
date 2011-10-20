@@ -8,6 +8,8 @@
 #ifndef NETSTRUCT_H
 #define	NETSTRUCT_H
 
+#include <iomanip>
+
 // struktury je nutne zabalit 1:1
 #pragma pack(push,1)
 
@@ -15,20 +17,41 @@ struct MacAddress {
     unsigned char addr[6];
 };
 
+ostream& operator<<(ostream& os, const MacAddress& mac) {
+    os << hex << setw(2) << setfill('0')
+            << (int)mac.addr[0] 
+            << (int)mac.addr[1] 
+            << (int)mac.addr[2] 
+            << (int)mac.addr[3] 
+            << (int)mac.addr[4] 
+            << (int)mac.addr[5]
+            << dec;
+    return os;
+}
+
 struct Ipv4Address {
     unsigned char addr[4];
 };
 
+ostream& operator<<(ostream& os, const Ipv4Address& ip) {
+    os 
+            << (int)ip.addr[0] << "."
+            << (int)ip.addr[1] << "."
+            << (int)ip.addr[2] << "."
+            << (int)ip.addr[3];
+    return os;
+}
+/*
 struct LayerHeader {
-    const unsigned char* getNextLayer() const = 0;
-};
+    //virtual const unsigned char* getNextLayer() const = 0;
+};*/
 
 /*Preamble 	Start of frame delimiter 	MAC destination 	MAC source 	802.1Q tag (optional) 	Ethertype or length 	Payload 	Frame check sequence (32-bit CRC) 	Interframe gap
 7 octets of 10101010 	1 octet of 10101011 	6 octets 	6 octets 	(4 octets) 	2 octets 	46–1500 octets 	4 octets 	12 octets
 	64–1522 octets 	
 72–1530 octets 	*/
 
-struct EthernetHeader : public LayerHeader {
+struct EthernetHeader {
     MacAddress destination;
     MacAddress source;
     unsigned short typeOrLen;
@@ -50,7 +73,7 @@ or
 192+ 	 
 Data*/
 
-struct Ipv4Header : public LayerHeader {
+struct Ipv4Header {
     unsigned char verLen;
     unsigned char DSCP;
     unsigned short length;
@@ -71,7 +94,7 @@ struct Ipv4Header : public LayerHeader {
     }
 };
 
-struct TcpHeader : public LayerHeader {
+struct TcpHeader {
     unsigned short sourcePort;
     unsigned short destinationPort;
     unsigned int seq;
@@ -80,7 +103,7 @@ struct TcpHeader : public LayerHeader {
     unsigned short windowSize;
     
     unsigned char getDataOffset() const {
-        return reinterpret_cast<unsigned char*>(&flags) & 0xF0; 
+        return (*reinterpret_cast<const unsigned char*>(&flags) & 0xF0) >> 4; 
     }
     
     const unsigned char* getNextLayer() const {
@@ -88,7 +111,7 @@ struct TcpHeader : public LayerHeader {
     }
 };
 
-struct UdpHeader : public LayerHeader {
+struct UdpHeader {
     unsigned short sourcePort;
     unsigned short destinationPort;
     unsigned short length;

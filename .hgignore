@@ -3,4 +3,7 @@
 \.chg\..*$
 \.rej$
 \.conflict\~$
+build
+dist
 nbproject\private\private.xml
+nbproject\private
