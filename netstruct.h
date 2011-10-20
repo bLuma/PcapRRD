@@ -8,8 +8,11 @@
 #ifndef NETSTRUCT_H
 #define	NETSTRUCT_H
 
+#include "common.h"
 #include <iomanip>
 #include <arpa/inet.h>
+
+IpAddrBinary convertStringToIpAddrBinary(string str);
 
 // struktury je nutne zabalit 1:1
 #pragma pack(push,1)
@@ -18,34 +21,12 @@ struct MacAddress {
     unsigned char addr[6];
 };
 
-ostream& operator<<(ostream& os, const MacAddress& mac) {
-    os << hex << setw(2) << setfill('0')
-            << (int)mac.addr[0] 
-            << (int)mac.addr[1] 
-            << (int)mac.addr[2] 
-            << (int)mac.addr[3] 
-            << (int)mac.addr[4] 
-            << (int)mac.addr[5]
-            << dec;
-    return os;
-}
-
 struct Ipv4Address {
     unsigned char addr[4];
 };
 
-ostream& operator<<(ostream& os, const Ipv4Address& ip) {
-    os 
-            << (int)ip.addr[0] << "."
-            << (int)ip.addr[1] << "."
-            << (int)ip.addr[2] << "."
-            << (int)ip.addr[3];
-    return os;
-}
-/*
-struct LayerHeader {
-    //virtual const unsigned char* getNextLayer() const = 0;
-};*/
+ostream& operator<<(ostream& os, const MacAddress& mac);
+ostream& operator<<(ostream& os, const Ipv4Address& ip);
 
 /*Preamble 	Start of frame delimiter 	MAC destination 	MAC source 	802.1Q tag (optional) 	Ethertype or length 	Payload 	Frame check sequence (32-bit CRC) 	Interframe gap
 7 octets of 10101010 	1 octet of 10101011 	6 octets 	6 octets 	(4 octets) 	2 octets 	46–1500 octets 	4 octets 	12 octets

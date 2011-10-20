@@ -141,8 +141,8 @@ void PacketAnalyzer::doL4() {
             
             DEBUG_PACKET("srcPort: " << tcp->getSourcePort() << " dstPort: " << tcp->getDestinationPort());
             
-            StatsAdapter::callServiceStat(*reinterpret_cast<const IpAddrBinary*>(m_source), PROTO_L3_TCP, tcp->getSourcePort(), tcp->getDestinationPort(), ST_UPLOAD, getPacketLen());
-            StatsAdapter::callServiceStat(*reinterpret_cast<const IpAddrBinary*>(m_destination), PROTO_L3_TCP, tcp->getDestinationPort(), tcp->getSourcePort(), ST_DOWNLOAD, getPacketLen());
+            StatsAdapter::callServiceStat((*reinterpret_cast<const IpAddrBinary*>(m_source)), PROTO_L3_TCP, tcp->getSourcePort(), tcp->getDestinationPort(), ST_UPLOAD, getPacketLen());
+            StatsAdapter::callServiceStat((*reinterpret_cast<const IpAddrBinary*>(m_destination)), PROTO_L3_TCP, tcp->getDestinationPort(), tcp->getSourcePort(), ST_DOWNLOAD, getPacketLen());
             
             break;
         }
@@ -154,8 +154,8 @@ void PacketAnalyzer::doL4() {
             
             DEBUG_PACKET("srcPort: " << udp->getSourcePort() << " dstPort: " << udp->getDestinationPort());
             
-            StatsAdapter::callServiceStat(*reinterpret_cast<const IpAddrBinary*>(m_source), PROTO_L3_UDP, udp->getSourcePort(), udp->getDestinationPort(), ST_UPLOAD, getPacketLen());
-            StatsAdapter::callServiceStat(*reinterpret_cast<const IpAddrBinary*>(m_destination), PROTO_L3_UDP, udp->getDestinationPort(), udp->getSourcePort(), ST_DOWNLOAD, getPacketLen());
+            StatsAdapter::callServiceStat((*reinterpret_cast<const IpAddrBinary*>(m_source)), PROTO_L3_UDP, udp->getSourcePort(), udp->getDestinationPort(), ST_UPLOAD, getPacketLen());
+            StatsAdapter::callServiceStat((*reinterpret_cast<const IpAddrBinary*>(m_destination)), PROTO_L3_UDP, udp->getDestinationPort(), udp->getSourcePort(), ST_DOWNLOAD, getPacketLen());
             break;
         }
     }

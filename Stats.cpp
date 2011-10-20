@@ -8,6 +8,8 @@
 #include "Stats.h"
 #include "RRD.h"
 
+Stats* Stats::m_instance = NULL;
+
 /**
  * Prevede binarni podobu IP adresy na retezec.
  * 

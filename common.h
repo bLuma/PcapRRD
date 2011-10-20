@@ -35,4 +35,10 @@ typedef unsigned long long uint64;
 #endif
 
 
+#ifdef WIN
+#define CONFIG_PATH
+#else
+#define CONFIG_PATH /etc/pcaprrd/
+#endif
+
 #endif	/* COMMON_H */

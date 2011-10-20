@@ -5,8 +5,6 @@
  * Created on 15. říjen 2011, 19:58
  */
 
-#include <stdlib.h>
-
 #include "PacketLogger.h"
 #include "PacketAnalyzer.h"
 
