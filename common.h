@@ -13,34 +13,25 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <vector>
+#include <set>
 
 #include <ctime>
 
 #include <map>
 // prozatim nevyuziti unordered_map pro problemy s IDE
 #define unordered_map map
-/*
-using std::string;
-using std::ostringstream;
-using std::unordered_map;
-using std::make_pair;
 
-using std::cout;
-using std::cerr;
-using std::endl;
-
-using std::hex;
-
-using std::ostream;*/
 using namespace std;
         
 typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;
 
+#undef DEBUG
 #ifdef DEBUG
-#define DEBUGLOG(x) cerr << x << endl;
+#define DEBUG_PACKET(x) cerr << x << endl;
 #else
-#define DEBUGLOG(x)
+#define DEBUG_PACKET(x)
 #endif
 
 

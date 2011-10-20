@@ -38,7 +38,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/RRD.o \
 	${OBJECTDIR}/PacketAnalyzer.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/PacketLogger.o
+	${OBJECTDIR}/PacketLogger.o \
+	${OBJECTDIR}/StatsAdapter.o
 
 
 # C Compiler Flags
@@ -89,6 +90,11 @@ ${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
+
+${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
 
 # Subprojects
 .build-subprojects:
