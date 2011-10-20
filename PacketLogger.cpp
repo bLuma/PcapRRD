@@ -61,6 +61,34 @@ bool PacketLogger::setInterface(string interface) {
     return false;
 }
 
+void PacketLogger::setFirstAvailableInterface() {
+    pcap_if_t* dev;
+    
+    if (pcap_findalldevs(&m_devices, m_errbuf) < 0)
+        return;
+    
+    for (dev = m_devices; dev != NULL; dev = dev->next) {
+        m_device = dev;
+        return;
+    }
+    
+    pcap_freealldevs(m_devices);
+}
+
+void PacketLogger::listInterfaces() {
+    pcap_if_t* devices;
+    pcap_if_t* dev;
+    
+    if (pcap_findalldevs(&devices, m_errbuf) < 0)
+        return;
+    
+    for (dev = devices; dev != NULL; dev = dev->next) {
+        cout << dev->name << ": " << dev->description << endl;
+    }
+    
+    pcap_freealldevs(devices);
+}
+
 /**
  * Nastavi zachytavaci filtr.
  * 
@@ -118,6 +146,7 @@ void* PacketLogger::captureThread(void* packetLogger) {
             continue;
         
         //cout << res << " Catched packet " << header->ts.tv_sec << " " << header->ts.tv_usec << " " << header->caplen << endl;
+        DEBUGLOG("@" << header->ts.tv_sec);
         PacketAnalyzer(header, data).analyze();
     }
     

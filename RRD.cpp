@@ -10,6 +10,12 @@
 
 pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+#ifdef WIN
+int rrd_create(int argc, char** argv) { return 0; }
+int rrd_update(int argc, char** argv) { return 0; }
+void rrd_clear_error() { }
+#endif
+
 /**
  * Konstruktor privatni, trida je staticka.
  */
