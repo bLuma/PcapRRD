@@ -8,6 +8,7 @@
       <itemPath>PacketLogger.h</itemPath>
       <itemPath>RRD.h</itemPath>
       <itemPath>Stats.h</itemPath>
+      <itemPath>StatsAdapter.h</itemPath>
       <itemPath>common.h</itemPath>
       <itemPath>netstruct.h</itemPath>
     </logicalFolder>
@@ -22,6 +23,7 @@
       <itemPath>PacketLogger.cpp</itemPath>
       <itemPath>RRD.cpp</itemPath>
       <itemPath>Stats.cpp</itemPath>
+      <itemPath>StatsAdapter.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

@@ -61,6 +61,9 @@ bool PacketLogger::setInterface(string interface) {
     return false;
 }
 
+/**
+ * Nastavi jako zachytavaci zarizeni prvni dostupny interface.
+ */
 void PacketLogger::setFirstAvailableInterface() {
     pcap_if_t* dev;
     
@@ -75,7 +78,12 @@ void PacketLogger::setFirstAvailableInterface() {
     pcap_freealldevs(m_devices);
 }
 
-void PacketLogger::listInterfaces() {
+/**
+ * Vypise vsechny dostupne zarizeni na obrazovku nebo do zadaneho vektoru.
+ * 
+ * @param output vystupni vektor
+ */
+void PacketLogger::listInterfaces(vector<string>* output = NULL) {
     pcap_if_t* devices;
     pcap_if_t* dev;
     
@@ -83,7 +91,10 @@ void PacketLogger::listInterfaces() {
         return;
     
     for (dev = devices; dev != NULL; dev = dev->next) {
-        cout << dev->name << ": " << dev->description << endl;
+        if (output)
+            output->push_back(dev->name);
+        else
+            cout << dev->name << ": " << dev->description << endl;
     }
     
     pcap_freealldevs(devices);
@@ -145,9 +156,9 @@ void* PacketLogger::captureThread(void* packetLogger) {
         if (res == 0)
             continue;
         
-        //cout << res << " Catched packet " << header->ts.tv_sec << " " << header->ts.tv_usec << " " << header->caplen << endl;
-        DEBUGLOG("@" << header->ts.tv_sec);
+        DEBUG_PACKET("@" << header->ts.tv_sec);
         PacketAnalyzer(header, data).analyze();
+        DEBUG_PACKET("");
     }
     
     return NULL;

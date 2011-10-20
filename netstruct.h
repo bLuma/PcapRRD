@@ -9,6 +9,7 @@
 #define	NETSTRUCT_H
 
 #include <iomanip>
+#include <arpa/inet.h>
 
 // struktury je nutne zabalit 1:1
 #pragma pack(push,1)
@@ -106,6 +107,9 @@ struct TcpHeader {
         return (*reinterpret_cast<const unsigned char*>(&flags) & 0xF0) >> 4; 
     }
     
+    unsigned short getSourcePort() const { return ntohs(sourcePort); }
+    unsigned short getDestinationPort() const { return ntohs(destinationPort); }
+    
     const unsigned char* getNextLayer() const {
         return reinterpret_cast<const unsigned char*>(this) + (getDataOffset());
     }
@@ -116,6 +120,9 @@ struct UdpHeader {
     unsigned short destinationPort;
     unsigned short length;
     unsigned short checksum;
+    
+    unsigned short getSourcePort() const { return ntohs(sourcePort); }
+    unsigned short getDestinationPort() const { return ntohs(destinationPort); }
     
     const unsigned char* getNextLayer() const {
         return reinterpret_cast<const unsigned char*>(this) + (2+2+2+2);

@@ -30,7 +30,7 @@ public:
     void setFirstAvailableInterface();
     bool startCapture();
     
-    void listInterfaces();
+    void listInterfaces(vector<string>* output/* = NULL*/);
     
     void join() {
         pthread_join(m_thread, NULL);

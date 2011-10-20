@@ -9,16 +9,19 @@
 #include "RRD.h"
 #include "Stats.h"
 #include "PacketLogger.h"
-
-using namespace std;
+#include "StatsAdapter.h"
 
 /*
  * 
  */
 int main(int argc, char** argv) {
+    StatsAdapter::servicePorts.insert(53);
+    StatsAdapter::servicePorts.insert(80);
+    StatsAdapter::servicePorts.insert(6667);
+    
     PacketLogger pl;
 #ifdef WIN
-    pl.listInterfaces();
+    pl.listInterfaces(NULL);
     //pl.setFirstAvailableInterface();
     cout << (pl.setInterface("\\Device\\NPF_{6F732E9A-EE1E-460D-ADC6-EB64EB656E76}") ? "int ok" : "int fa") << endl;
 #else

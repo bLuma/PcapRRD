@@ -21,10 +21,19 @@
 #define PROTO_L2_ARP  0x0806
 #define PROTO_L2_RARP 0x8035
 
-#define PROTO_L3_TCP  0x06
+/*#define PROTO_L3_TCP  0x06
 #define PROTO_L3_UDP  0x11
-#define PROTO_L3_ICMP 0x01
+#define PROTO_L3_ICMP 0x01*/
 
+enum L3Proto {
+    PROTO_L3_TCP = 0x06,
+    PROTO_L3_UDP = 0x11,
+    PROTO_L3_ICMP = 0x01
+};
+
+/**
+ * Analyzator paketu.
+ */
 class PacketAnalyzer {
 public:
     PacketAnalyzer(pcap_pkthdr* header, const unsigned char* data);
@@ -38,20 +47,53 @@ private:
     inline void doL3();
     inline void doL4();
     
-    inline bool isIpv4() {
+    /**
+     * Zjistuje, je-li paket IPv4.
+     * 
+     * @return true, pokud se jedna o IPv4 paket
+     */
+    inline bool isIpv4() const {
         return m_protoL3 == PROTO_L2_IPV4 && m_dataL3;
     }
+    
+    inline unsigned int getPacketLen() const {
+        return m_header->len;
+    }
 
+    /** 
+     * Informacni hlavicka zachyceneho paketu.
+     */
     pcap_pkthdr* m_header;
+    /** 
+     * Datova cast zachyceneho paketu.
+     */
     const unsigned char* m_data;
     
+    /** 
+     * Cislo protokolu treti vrstvy.
+     */
     unsigned short m_protoL3;
+    /** 
+     * Data protokolu treti vrstvy.
+     */
     const unsigned char* m_dataL3;
     
+    /** 
+     * Cislo protokolu ctvrte vrstvy.
+     */
     unsigned short m_protoL4;
+    /** 
+     * Data protokolu ctvrte vrstvy.
+     */
     const unsigned char* m_dataL4;
     
+    /** 
+     * Zdrojova adresa, aktualni typ zalezi na analyzovane vrstve.
+     */
     const unsigned char* m_source;
+    /**
+     * Cilova adresa, aktualni typ zalezi na analyzovane vrstve.
+     */
     const unsigned char* m_destination;
 };
 
