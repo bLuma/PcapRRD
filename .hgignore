@@ -7,3 +7,5 @@ build
 dist
 nbproject\\private\\private.xml
 nbproject\\private
+.*\.rrd$
+rrdtool.exe
