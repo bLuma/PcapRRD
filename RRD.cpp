@@ -7,12 +7,28 @@
 
 #include <rrd.h>
 #include "RRD.h"
+#include <cstring>
 
 pthread_mutex_t RRD::m_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 #ifdef WIN
-int rrd_create(int argc, char** argv) { return 0; }
-int rrd_update(int argc, char** argv) { return 0; }
+void callRRD(int argc, char** argv) {
+    ostringstream oss;
+    oss << "./rrdtool.exe ";
+    if (argv[0] == "rrd_create")
+        oss << "create";
+    else
+        oss << "update";
+    
+    for (int i = 1; i < argc; i++)
+        oss << " " << argv[i];
+
+    //cout << oss.str().c_str() << endl;
+    system(oss.str().c_str());
+}
+
+int rrd_create(int argc, char** argv) { callRRD(argc, argv); return 0; }
+int rrd_update(int argc, char** argv) { callRRD(argc, argv); return 0; }
 void rrd_clear_error() { }
 #endif
 
@@ -45,10 +61,19 @@ RRD::~RRD() {
 bool RRD::create(string dbname/*, dbtype type */) {   
     int argc = 0;
     const char* argv[MAX_ARGV];
+    
+    char filename[255];
+    if (dbname.size() > 255 - 1 - 4)
+        return false;
+    
+    strcpy(filename, dbname.c_str());
+    strcpy(filename + dbname.size(), ".rrd");
+    
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
-    argv[argc++] = (dbname + ".rrd").c_str();
     
+    argv[argc++] = filename;
+
     argv[argc++] = "--step";
     argv[argc++] = "5";
     
