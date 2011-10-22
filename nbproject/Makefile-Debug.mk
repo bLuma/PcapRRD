@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/RRD.o \
 	${OBJECTDIR}/PacketAnalyzer.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/RRDUpdater.o \
 	${OBJECTDIR}/PacketLogger.o \
 	${OBJECTDIR}/StatsAdapter.o \
 	${OBJECTDIR}/netstruct.o
@@ -86,6 +87,11 @@ ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -DDEBUG -DWIN -I../winpcap/Include -I../rrdtool.src/src -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/RRDUpdater.o: RRDUpdater.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -DDEBUG -DWIN -I../winpcap/Include -I../rrdtool.src/src -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRDUpdater.o RRDUpdater.cpp
 
 ${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp 
 	${MKDIR} -p ${OBJECTDIR}

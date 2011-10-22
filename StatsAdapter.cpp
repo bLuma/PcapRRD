@@ -14,10 +14,23 @@ set<unsigned short> StatsAdapter::m_servicePorts;
 set<IpAddrBinary> StatsAdapter::m_hostFilter;
 set<uint64> StatsAdapter::m_serviceFilter;
 
+/**
+ * Zjistuje je-li port sluzbou.
+ * 
+ * @param port cislo portu
+ * @return true, pokud se jedna o znamou sluzbu
+ */
 bool StatsAdapter::isService(unsigned short port) {
     return m_servicePorts.find(port) != m_servicePorts.end();
 }
 
+/**
+ * Snazi se najit port, ke kteremu by mely byt pripocitany statistiky.
+ * 
+ * @param localPort mistni port
+ * @param remotePort vzdaleny port
+ * @return cislo portu, ktery by mel byt sluzbou
+ */
 unsigned short StatsAdapter::findServicePort(unsigned short localPort, unsigned short remotePort) {
     if (isService(localPort))
         return localPort;
@@ -41,6 +54,13 @@ StatsAdapter::StatsAdapter(const StatsAdapter& orig) {
 StatsAdapter::~StatsAdapter() {
 }
 
+/**
+ * Adapter pro volani aktualizace statistik.
+ * 
+ * @param addr adresa hosta
+ * @param type typ statistiky
+ * @param value hodnota
+ */
 void StatsAdapter::callHostStat(const IpAddrBinary addr, StatType type, unsigned int value) {
     if (m_hostFilter.find(addr) == m_hostFilter.end())
         return;
@@ -51,6 +71,16 @@ void StatsAdapter::callHostStat(const IpAddrBinary addr, StatType type, unsigned
         value);
 }
 
+/**
+ * Adapter pro volani aktualizace statistik.
+ * 
+ * @param addr adresa hosta
+ * @param protocol protokol
+ * @param localPort mistni port
+ * @param remotePort vzdaleny port
+ * @param type typ statistiky
+ * @param value hodnota
+ */
 void StatsAdapter::callServiceStat(const IpAddrBinary addr, const L3Proto protocol, unsigned short localPort, unsigned short remotePort, StatType type, unsigned int value) {
     unsigned short service = findServicePort(localPort, remotePort);
     
@@ -64,7 +94,7 @@ void StatsAdapter::callServiceStat(const IpAddrBinary addr, const L3Proto protoc
     if (m_serviceFilter.find(sab.keyVal()) == m_serviceFilter.end())
         return;
     
-    cout << (*((Ipv4Address*)&addr)) << " " << (protocol==PROTO_L3_TCP ? "TCP(" : "UDP(") << service << ") " << (type==ST_DOWNLOAD ? "<--" : "-->") << " " << value << endl; 
+    //cout << (*((Ipv4Address*)&addr)) << " " << (protocol==PROTO_L3_TCP ? "TCP(" : "UDP(") << service << ") " << (type==ST_DOWNLOAD ? "<--" : "-->") << " " << value << endl; 
     
     Stats::instance().AddCounterService(
         addr,
@@ -74,10 +104,18 @@ void StatsAdapter::callServiceStat(const IpAddrBinary addr, const L3Proto protoc
         value);
 }
 
+/**
+ * Prida port sluzby do seznamu.
+ * 
+ * @param port cislo portu
+ */
 void StatsAdapter::addServicePort(unsigned short port) {
     m_servicePorts.insert(port);
 }
 
+/**
+ * Nacte zachytavaci pravidla ze souboru.
+ */
 void StatsAdapter::loadRules() {
     ifstream file(CONFIG_PATH "rules.cfg");
     if (!file.is_open())
@@ -90,6 +128,9 @@ void StatsAdapter::loadRules() {
         
         if (file.eof() || line.empty())
             break;
+        
+        if (line[0] == '#')
+            continue;
         
         //cout << "F:" << line.c_str() << endl;
         

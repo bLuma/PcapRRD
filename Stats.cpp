@@ -96,5 +96,5 @@ void Stats::AddCounterService(IpAddrBinary host, ServiceType stype, unsigned sho
     
     StatsHolder& holder = it->second;
     holder.statistics[type] += value;
-    
+    //cout << type << " " << port << " " <<  holder.statistics[type] << endl;
 }
