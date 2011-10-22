@@ -34,11 +34,19 @@ typedef unsigned long long uint64;
 #define DEBUG_PACKET(x)
 #endif
 
-
 #ifdef WIN
 #define CONFIG_PATH
 #else
 #define CONFIG_PATH /etc/pcaprrd/
 #endif
+
+#ifndef WIN
+#define LINUX
+#endif
+
+namespace App {
+    bool exit;
+    string pcapFilter;
+};
 
 #endif	/* COMMON_H */

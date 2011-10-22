@@ -23,7 +23,7 @@ void callRRD(int argc, char** argv) {
     for (int i = 1; i < argc; i++)
         oss << " " << argv[i];
 
-    //cout << oss.str().c_str() << endl;
+    cout << oss.str().c_str() << endl;
     system(oss.str().c_str());
 }
 
@@ -106,9 +106,17 @@ bool RRD::create(string dbname/*, dbtype type */) {
 bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* datasets) {
     int argc = 0;
     const char* argv[MAX_ARGV];
+    
+    char filename[255], updatestr[512];
+    if (dbname.size() > 255 - 1 - 4)
+        return false;
+    
+    strcpy(filename, dbname.c_str());
+    strcpy(filename + dbname.size(), ".rrd");    
+    
     argv[argc++] = "rrd_update";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
-    argv[argc++] = (dbname + ".rrd").c_str();
+    argv[argc++] = filename;
     
     ostringstream oss;
     oss << time;
@@ -117,7 +125,13 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
         datasets++;
     }
 
-    argv[argc++] = oss.str().c_str();
+    string tmp = oss.str();
+    if (tmp.size() > 512 - 1)
+        return false;
+    
+    strcpy(updatestr, tmp.c_str());
+    
+    argv[argc++] = updatestr;
     cleanRest(argc, argv);
         
     pthread_mutex_lock(&m_mutex);

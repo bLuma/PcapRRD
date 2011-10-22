@@ -69,11 +69,23 @@ struct ServiceAddrBinary {
 string convertIpAddrBinaryToString(IpAddrBinary addr);
 string convertServiceAddrBinaryToString(ServiceAddrBinary addr);
 
+/// Mapy pro ulozeni statistik
+typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
+typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;
+    
+typedef HostMap::const_iterator HostMapIterator;
+typedef ServiceMap::const_iterator ServiceMapIterator;
+
 /**
  * Stats uchovava souhrnne informace ze zachycenych paketu.
  */
 class Stats {
-public:   
+public:      
+    /**
+     * Implementace singletonu. Vraci instanci Stats.
+     * 
+     * @return singleton tridy Stats
+     */
     static Stats& instance() {
         if (!m_instance)
             m_instance = new Stats;
@@ -86,17 +98,20 @@ public:
     void AddCounterService(IpAddrBinary host, ServiceType stype, unsigned short port, StatType type, unsigned int value);
     
     // pull
+    HostMapIterator hostBegin() const { return m_hosts.begin(); }
+    HostMapIterator hostEnd() const { return m_hosts.end(); }
+    ServiceMapIterator serviceBegin() const { return m_services.begin(); }
+    ServiceMapIterator serviceEnd() const { return m_services.end(); }
     
 private:
     Stats();
     Stats(const Stats& orig);
     virtual ~Stats();
     
+    /**
+     * Singleton tridy.
+     */
     static Stats* m_instance;
-    
-    /// Mapy pro ulozeni statistik
-    typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;
-    typedef unordered_map<ServiceAddrBinary, StatsHolder> ServiceMap;
     
     /**
      * Uchovava statistiky jednotlivych hostu.

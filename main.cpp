@@ -6,38 +6,54 @@
  */
 
 #include <cstdlib>
+#include <signal.h>
+#include <sys/types.h>
 #include "RRD.h"
 #include "Stats.h"
 #include "PacketLogger.h"
 #include "StatsAdapter.h"
+#include "RRDUpdater.h"
+
+bool App::exit = false;
+string pcapFilter = "";
+
+void signalHandler(int sig) {
+    App::exit = true;
+}
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-    //RRD::create("wintest");
+    /* Nastaveni zachytavani signalu */
+    signal(SIGINT, signalHandler);
+    signal(SIGHUP, signalHandler);
+    signal(SIGQUIT, signalHandler);
+    signal(SIGABRT, signalHandler);
+    signal(SIGTERM, signalHandler);
+    signal(SIGTSTP, signalHandler);
+    
+    /* Nacti konfiguraci */
     StatsAdapter::loadRules();
     
+#ifdef LINUX
+    /* Daemonize */
+    //daemon(0, 0);
+#endif
+    
     PacketLogger pl;
+    RRDUpdater updater;
+    
+    updater.start();   
 #ifdef WIN
     pl.listInterfaces(NULL);
-    //pl.setFirstAvailableInterface();
     cout << (pl.setInterface("\\Device\\NPF_{6F732E9A-EE1E-460D-ADC6-EB64EB656E76}") ? "int ok" : "int fa") << endl;
 #else
     cout << (pl.setInterface("eth0") ? "int ok" : "int fa") << endl;
 #endif
     cout << (pl.startCapture() ? "ca ok" : "ca fa") << endl;
+    
     pl.join();
-    
-    //Stats stat;
-    //stat.AddCounter(0x000000FF, ST_DOWNLOAD, 100);
-    //stat.AddCounterService(0xFF, SR_TCP, 10, ST_DOWNLOAD, 100);
-    //stat.AddCounterService(0x10, SR_UDP, 10, ST_DOWNLOAD, 100);
-    
-    //RRD::create("test.file.rrd");
-    
-    //MAKE_VAL_PAIR(10, 20);
-    //RRD::update("test.file.rrd", time(NULL), 2, GET_VAL_PAIR);
-    
+    updater.join();
     return 0;
 }

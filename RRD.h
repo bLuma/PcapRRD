@@ -23,8 +23,8 @@ rrdtool {update | updatev} filename [--template|-t ds-name[:ds-name]...] [--daem
 
 rrd graph 
 DEF:<vname>=<rrdfile>:<ds-name>:<CF>[:step=<step>][:start=<time>][:end=<time>][:reduce=<CF>]
-VDEF:vname=RPN expression
-CDEF:vname=RPN expression
+VDEF:vname=RPN expression - agregace (max, min, average)
+CDEF:vname=RPN expression - výpočty nové množiny bodů
 
 PRINT:vname:format
 GPRINT:vname:format

@@ -7,6 +7,7 @@
       <itemPath>PacketAnalyzer.h</itemPath>
       <itemPath>PacketLogger.h</itemPath>
       <itemPath>RRD.h</itemPath>
+      <itemPath>RRDUpdater.h</itemPath>
       <itemPath>Stats.h</itemPath>
       <itemPath>StatsAdapter.h</itemPath>
       <itemPath>common.h</itemPath>
@@ -22,6 +23,7 @@
       <itemPath>PacketAnalyzer.cpp</itemPath>
       <itemPath>PacketLogger.cpp</itemPath>
       <itemPath>RRD.cpp</itemPath>
+      <itemPath>RRDUpdater.cpp</itemPath>
       <itemPath>Stats.cpp</itemPath>
       <itemPath>StatsAdapter.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
