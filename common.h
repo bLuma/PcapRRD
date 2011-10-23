@@ -45,8 +45,10 @@ typedef unsigned long long uint64;
 #endif
 
 namespace App {
-    bool exit;
-    string pcapFilter;
+    extern bool exit;
+    
+    extern string interface;
+    extern string pcapFilter;
 };
 
 #endif	/* COMMON_H */

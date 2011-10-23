@@ -37,6 +37,7 @@ IpAddrBinary convertStringToIpAddrBinary(string str) {
         
         str = str.substr(str.find('.') + 1);
     }
-    cerr << hex << ip;
+    
+    //cerr << hex << ip;
     return ip;
 }

@@ -40,6 +40,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/RRDUpdater.o \
 	${OBJECTDIR}/PacketLogger.o \
+	${OBJECTDIR}/config.o \
 	${OBJECTDIR}/StatsAdapter.o \
 	${OBJECTDIR}/netstruct.o
 
@@ -97,6 +98,11 @@ ${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
+
+${OBJECTDIR}/config.o: config.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
 
 ${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp 
 	${MKDIR} -p ${OBJECTDIR}
