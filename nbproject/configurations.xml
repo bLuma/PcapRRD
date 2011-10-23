@@ -26,6 +26,7 @@
       <itemPath>RRDUpdater.cpp</itemPath>
       <itemPath>Stats.cpp</itemPath>
       <itemPath>StatsAdapter.cpp</itemPath>
+      <itemPath>config.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>netstruct.cpp</itemPath>
     </logicalFolder>
