@@ -32,7 +32,7 @@ string convertPointerToStr(const T* ptr) {
  * @param data data paketu
  */
 PacketAnalyzer::PacketAnalyzer(pcap_pkthdr* header, const unsigned char* data) 
-    : m_header(header), m_data(data), m_reqSize(0), m_dataL3(NULL), m_dataL4(NULL) {
+    : m_reqSize(0), m_header(header), m_data(data), m_dataL3(NULL), m_dataL4(NULL) {
 }
 
 /**
@@ -65,7 +65,7 @@ void PacketAnalyzer::analyze() {
 void PacketAnalyzer::doL2() {
     DEBUG_PACKET("==== Ethernet ==== ");
     
-    if (!checkSize(6+6+2)) return;
+    if (!checkSize(14)) return;
     const EthernetHeader* ethernet = reinterpret_cast<const EthernetHeader*>(m_data);
     m_protoL3 = ntohs(ethernet->typeOrLen);
     
@@ -108,6 +108,7 @@ void PacketAnalyzer::doL3() {
             StatsAdapter::callHostStat(*reinterpret_cast<const IpAddrBinary*>(m_source), ST_UPLOAD, getPacketLen());
             StatsAdapter::callHostStat(*reinterpret_cast<const IpAddrBinary*>(m_destination), ST_DOWNLOAD, getPacketLen());
             
+            if (!checkSize(ip->getLength() - 20)) return;
             m_dataL4 = ip->getNextLayer();
             break;
         }

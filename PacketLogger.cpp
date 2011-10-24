@@ -149,7 +149,7 @@ void* PacketLogger::captureThread(void* packetLogger) {
     pcap_pkthdr* header;
     const unsigned char* data;
     
-    while ((res = pcap_next_ex(instance->m_handle, &header, &data)) >= 0) {
+    while (!App::exit && (res = pcap_next_ex(instance->m_handle, &header, &data)) >= 0) {
         // timeout
         if (res == 0)
             continue;
