@@ -32,9 +32,18 @@ private:
     static bool isService(unsigned short port);
     static unsigned short findServicePort(unsigned short localPort, unsigned short remotePort);
     
+    /**
+     * Porty, ktere jsou spojeny se sledovanymi sluzbami.
+     */
     static set<unsigned short> m_servicePorts;
     
+    /**
+     * Zachytavaci filtry hostu.
+     */
     static set<IpAddrBinary> m_hostFilter;
+    /**
+     * Zachytavaci filtry sluzeb.
+     */
     static set<uint64> m_serviceFilter;
 };
 

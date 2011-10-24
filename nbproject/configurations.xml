@@ -11,6 +11,7 @@
       <itemPath>Stats.h</itemPath>
       <itemPath>StatsAdapter.h</itemPath>
       <itemPath>common.h</itemPath>
+      <itemPath>config.h</itemPath>
       <itemPath>netstruct.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"

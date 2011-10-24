@@ -32,9 +32,7 @@ string convertPointerToStr(const T* ptr) {
  * @param data data paketu
  */
 PacketAnalyzer::PacketAnalyzer(pcap_pkthdr* header, const unsigned char* data) 
-    : m_header(header), m_data(data) {
-    m_dataL3 = NULL;
-    m_dataL4 = NULL;
+    : m_header(header), m_data(data), m_reqSize(0), m_dataL3(NULL), m_dataL4(NULL) {
 }
 
 /**
@@ -67,6 +65,7 @@ void PacketAnalyzer::analyze() {
 void PacketAnalyzer::doL2() {
     DEBUG_PACKET("==== Ethernet ==== ");
     
+    if (!checkSize(6+6+2)) return;
     const EthernetHeader* ethernet = reinterpret_cast<const EthernetHeader*>(m_data);
     m_protoL3 = ntohs(ethernet->typeOrLen);
     
@@ -96,6 +95,7 @@ void PacketAnalyzer::doL3() {
         // IPv4
         case PROTO_L2_IPV4: {
             DEBUG_PACKET("=== Ipv4 ===");
+            if (!checkSize(20)) return;
             const Ipv4Header* ip = reinterpret_cast<const Ipv4Header*>(m_dataL3);
     
             m_source = reinterpret_cast<const unsigned char*>(&ip->source);
@@ -137,6 +137,7 @@ void PacketAnalyzer::doL4() {
         // TCP
         case PROTO_L3_TCP: {
             DEBUG_PACKET("== TCP ==");
+            if (!checkSize(16)) return;
             const TcpHeader* tcp = reinterpret_cast<const TcpHeader*>(m_dataL4);
             
             DEBUG_PACKET("srcPort: " << tcp->getSourcePort() << " dstPort: " << tcp->getDestinationPort());
@@ -150,6 +151,7 @@ void PacketAnalyzer::doL4() {
         // UDP
         case PROTO_L3_UDP: {
             DEBUG_PACKET("== UDP ==");
+            if (!checkSize(8)) return;
             const UdpHeader* udp = reinterpret_cast<const UdpHeader*>(m_dataL4);
             
             DEBUG_PACKET("srcPort: " << udp->getSourcePort() << " dstPort: " << udp->getDestinationPort());
