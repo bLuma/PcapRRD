@@ -68,11 +68,11 @@ struct Ipv4Header {
     Ipv4Address destination;
    
     unsigned char getLength() const {
-        return verLen & 0x0F;
+        return (verLen & 0x0F) * 4;
     }
     
     const unsigned char* getNextLayer() const {
-        return reinterpret_cast<const unsigned char*>(this) + (getLength() * 4);
+        return reinterpret_cast<const unsigned char*>(this) + getLength();
     }
 };
 

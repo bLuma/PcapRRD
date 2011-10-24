@@ -10,7 +10,10 @@
 
 #include "common.h"
 
-#define MAX_ARGV 255
+#define MAX_ARGV 15
+
+#define RRD_UPDATE_INTERVAL 15
+#define RRD_UPDATE_INTERVAL_STR "15"
 
 /*
 rrd create

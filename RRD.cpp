@@ -75,15 +75,16 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = filename;
 
     argv[argc++] = "--step";
-    argv[argc++] = "5";
+    argv[argc++] = RRD_UPDATE_INTERVAL_STR;
     
     argv[argc++] = "DS:download:DERIVE:300:0:U";
     argv[argc++] = "DS:upload:DERIVE:300:0:U";
     
-    argv[argc++] = "RRA:AVERAGE:0.5:1:86400";   // 5s - den
-    argv[argc++] = "RRA:AVERAGE:0.5:12:10080";  // 1m - 7 dni
-    argv[argc++] = "RRA:AVERAGE:0.5:60:105120"; // 5m - 1 rok
-    argv[argc++] = "RRA:AVERAGE:0.5:720:35040"; // 1h - 4 roky
+    argv[argc++] = "RRA:AVERAGE:0.5:1:5760";   // 5s - den // 15
+    argv[argc++] = "RRA:AVERAGE:0.5:4:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:AVERAGE:0.5:20:105120"; // 5m - 1 rok
+    argv[argc++] = "RRA:AVERAGE:0.5:240:35040"; // 1h - 4 roky   
+    
     cleanRest(argc, argv);
         
     pthread_mutex_lock(&m_mutex);

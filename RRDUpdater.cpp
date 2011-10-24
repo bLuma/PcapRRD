@@ -64,9 +64,9 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
         sleep(1);
         
         time_t now = time(NULL);
-        if (now % 5) {
-            if (now - lastRun > 5) {
-                now = now - (now % 5);
+        if (now % RRD_UPDATE_INTERVAL) {
+            if (now - lastRun > RRD_UPDATE_INTERVAL) {
+                now = now - (now % RRD_UPDATE_INTERVAL);
             } else {
                 continue;
             }
