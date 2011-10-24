@@ -12,11 +12,23 @@
 #ifdef WIN
 #include <windows.h>
 
+/**
+ * Zjistuje existuje-li soubor na disku
+ * 
+ * @param name jmeno souboru
+ * @return true, pokud existuje
+ */
 bool fileExists(string name) {
     string copy = name + ".rrd";
     return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
 }
 #else
+/**
+ * Zjistuje existuje-li soubor na disku
+ * 
+ * @param name jmeno souboru
+ * @return true, pokud existuje
+ */
 bool fileExists(string name) {
     return false;
 }
@@ -46,16 +58,19 @@ void RRDUpdater::start() {
  */
 void* RRDUpdater::loggerThread(void* rrdAdapter) {
     RRDUpdater& updater = *reinterpret_cast<RRDUpdater*>(rrdAdapter);
-    //cout << "Logger launched" << endl;
+    time_t lastRun = time(NULL);
     
     while (true) {
         sleep(1);
         
         time_t now = time(NULL);
-        if (now % 5)
-            continue;
-        
-        //cout << "RRD!!" << endl;
+        if (now % 5) {
+            if (now - lastRun > 5) {
+                now = now - (now % 5);
+            } else {
+                continue;
+            }
+        }
         
         for (HostMapIterator it = updater.m_stats.hostBegin(); it != updater.m_stats.hostEnd(); it++) {
             string name = convertIpAddrBinaryToString(it->first);
@@ -77,7 +92,9 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
             }
             
             RRD::update(name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
-        }        
+        }      
+        
+        lastRun = now;
     }
     
     return NULL;

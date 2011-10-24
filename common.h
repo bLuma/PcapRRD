@@ -44,11 +44,6 @@ typedef unsigned long long uint64;
 #define LINUX
 #endif
 
-namespace App {
-    extern bool exit;
-    
-    extern string interface;
-    extern string pcapFilter;
-};
+#include "config.h"
 
 #endif	/* COMMON_H */

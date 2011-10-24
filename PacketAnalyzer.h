@@ -56,10 +56,37 @@ private:
         return m_protoL3 == PROTO_L2_IPV4 && m_dataL3;
     }
     
+    /**
+     * Vraci velikost zachyceneho paketu.
+     * 
+     * @return velikost paketu
+     */
     inline unsigned int getPacketLen() const {
         return m_header->len;
     }
-
+    
+    /**
+     * Prubezne kontroluje je-li velikost zachycene casti paketu dostatecna pro
+     * dalsi zpracovni.
+     * 
+     * @param required pozadovana velikost paketu
+     * @return true, pokud je paket cely
+     */
+    inline bool checkSize(unsigned int required) {
+        m_reqSize += required;
+        
+        if (getPacketLen() < m_reqSize) {
+            DEBUG_PACKET("checkSize failed: " << getPacketLen() << " / " << m_reqSize << " (" << required << ")");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Potrebna velikost paketu. Viz checkSize.
+     */
+    unsigned int m_reqSize;
     /** 
      * Informacni hlavicka zachyceneho paketu.
      */

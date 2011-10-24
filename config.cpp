@@ -9,6 +9,11 @@ namespace App {
     string pcapFilter = "";
 };
 
+/**
+ * Orizne retezec zprava.
+ * 
+ * @param str retezec
+ */
 void trimRight(string& str) {
     for (int i = str.size() - 1; i > 1; i--) {
         if (str[i] == '\n' || str[i] == '\r') {
@@ -19,6 +24,9 @@ void trimRight(string& str) {
     }
 }
 
+/**
+ * Nacte konfiguraci ze souboru.
+ */
 void loadConfig() {
     ifstream fs(CONFIG_PATH "pcaprrd.cfg");
     

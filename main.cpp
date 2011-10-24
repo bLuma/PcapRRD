@@ -16,13 +16,18 @@
 
 void loadConfig();
 
+/**
+ * Zpracovani signalu.
+ * 
+ * @param sig cislo signalu
+ */
 void signalHandler(int sig) {
     //cout << "exit!" << endl;
     App::exit = true;
 }
 
 /*
- * 
+ * Zavadeci funkce.
  */
 int main(int argc, char** argv) {
     /* Nastaveni zachytavani signalu */
@@ -51,6 +56,7 @@ int main(int argc, char** argv) {
         cout << "Capturing at: " << App::interface.c_str() << endl;
     } else {
         cerr << "Nelze nastavit interface!" << endl;
+        pl.listInterfaces(NULL);
         return 9;
     }
     pl.setFilter(App::pcapFilter);
