@@ -41,7 +41,9 @@ typedef unsigned long long uint64;
 #endif
 
 #ifndef WIN
+#ifndef LINUX
 #define LINUX
+#endif
 #endif
 
 #include "config.h"

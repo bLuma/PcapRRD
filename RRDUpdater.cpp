@@ -23,6 +23,7 @@ bool fileExists(string name) {
     return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
 }
 #else
+#include <sys/stat.h>
 /**
  * Zjistuje existuje-li soubor na disku
  * 
@@ -30,7 +31,10 @@ bool fileExists(string name) {
  * @return true, pokud existuje
  */
 bool fileExists(string name) {
-    return false;
+    struct stat stats;
+    
+    string copy = name + RRD_FILE_EXT;
+    return stat(copy.c_str(), &stats) == 0;
 }
 #endif
 

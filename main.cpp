@@ -44,7 +44,8 @@ int main(int argc, char** argv) {
     
 #ifdef LINUX
     /* Daemonize */
-    //daemon(0, 0);
+    daemon(0, 0);
+    chdir("/var/pcaprrd/");
 #endif
     
     PacketLogger pl;

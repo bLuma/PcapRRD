@@ -72,47 +72,47 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd: ${OBJECTFILES}
 ${OBJECTDIR}/Stats.o: Stats.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/Stats.o Stats.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/Stats.o Stats.cpp
 
 ${OBJECTDIR}/RRD.o: RRD.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRD.o RRD.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRD.o RRD.cpp
 
 ${OBJECTDIR}/PacketAnalyzer.o: PacketAnalyzer.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketAnalyzer.o PacketAnalyzer.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketAnalyzer.o PacketAnalyzer.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/RRDUpdater.o: RRDUpdater.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRDUpdater.o RRDUpdater.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRDUpdater.o RRDUpdater.cpp
 
 ${OBJECTDIR}/config.o: config.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
 
 ${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
 
 ${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
 
 ${OBJECTDIR}/netstruct.o: netstruct.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/netstruct.o netstruct.cpp
+	$(COMPILE.cc) -g -Wall -DLINUX -DDEBUG -MMD -MP -MF $@.d -o ${OBJECTDIR}/netstruct.o netstruct.cpp
 
 # Subprojects
 .build-subprojects:
