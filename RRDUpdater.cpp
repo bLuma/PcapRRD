@@ -60,7 +60,7 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
     RRDUpdater& updater = *reinterpret_cast<RRDUpdater*>(rrdAdapter);
     time_t lastRun = time(NULL);
     
-    while (true) {
+    while (!App::exit) {
         sleep(1);
         
         time_t now = time(NULL);

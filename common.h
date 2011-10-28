@@ -35,9 +35,9 @@ typedef unsigned long long uint64;
 #endif
 
 #ifdef WIN
-#define CONFIG_PATH
+#define CONFIG_PATH 
 #else
-#define CONFIG_PATH /etc/pcaprrd/
+#define CONFIG_PATH "/etc/pcaprrd/"
 #endif
 
 #ifndef WIN
