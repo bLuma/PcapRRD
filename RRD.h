@@ -14,6 +14,7 @@
 
 #define RRD_UPDATE_INTERVAL 15
 #define RRD_UPDATE_INTERVAL_STR "15"
+#define RRD_FILE_EXT ".rrd"
 
 /*
 rrd create

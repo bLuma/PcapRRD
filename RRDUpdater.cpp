@@ -19,7 +19,7 @@
  * @return true, pokud existuje
  */
 bool fileExists(string name) {
-    string copy = name + ".rrd";
+    string copy = name + RRD_FILE_EXT;
     return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
 }
 #else

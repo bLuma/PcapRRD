@@ -67,7 +67,7 @@ bool RRD::create(string dbname/*, dbtype type */) {
         return false;
     
     strcpy(filename, dbname.c_str());
-    strcpy(filename + dbname.size(), ".rrd");
+    strcpy(filename + dbname.size(), RRD_FILE_EXT);
     
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
@@ -113,7 +113,7 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
         return false;
     
     strcpy(filename, dbname.c_str());
-    strcpy(filename + dbname.size(), ".rrd");    
+    strcpy(filename + dbname.size(), RRD_FILE_EXT);    
     
     argv[argc++] = "rrd_update";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
