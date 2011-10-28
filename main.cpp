@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
     if (!pl.setInterface(App::interface)) {
         cerr << "Nelze nastavit interface!" << endl;
         pl.listInterfaces(NULL);
+        cerr << endl;
         return 9;
     }
     pl.setFilter(App::pcapFilter);

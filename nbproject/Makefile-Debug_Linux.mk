@@ -36,8 +36,13 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Stats.o \
 	${OBJECTDIR}/RRD.o \
+	${OBJECTDIR}/PacketAnalyzer.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/PacketLogger.o
+	${OBJECTDIR}/RRDUpdater.o \
+	${OBJECTDIR}/config.o \
+	${OBJECTDIR}/PacketLogger.o \
+	${OBJECTDIR}/StatsAdapter.o \
+	${OBJECTDIR}/netstruct.o
 
 
 # C Compiler Flags
@@ -74,15 +79,40 @@ ${OBJECTDIR}/RRD.o: RRD.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRD.o RRD.cpp
 
+${OBJECTDIR}/PacketAnalyzer.o: PacketAnalyzer.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketAnalyzer.o PacketAnalyzer.cpp
+
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
+${OBJECTDIR}/RRDUpdater.o: RRDUpdater.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRDUpdater.o RRDUpdater.cpp
+
+${OBJECTDIR}/config.o: config.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/config.o config.cpp
+
 ${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
+
+${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
+
+${OBJECTDIR}/netstruct.o: netstruct.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -Wall -MMD -MP -MF $@.d -o ${OBJECTDIR}/netstruct.o netstruct.cpp
 
 # Subprojects
 .build-subprojects:
