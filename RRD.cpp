@@ -86,6 +86,8 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = "RRA:AVERAGE:0.5:240:35040"; // 1h - 4 roky   
     
     cleanRest(argc, argv);
+    
+    //cout << "RRD Create" << endl;
         
     pthread_mutex_lock(&m_mutex);
     prepare();    
@@ -134,6 +136,12 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
     
     argv[argc++] = updatestr;
     cleanRest(argc, argv);
+    
+    //cout << "RRD Update" << endl;
+    /*for (int i = 0; i < argc; i++) {
+        cout << argv[i] << " ";
+    }
+    cout << endl;*/
         
     pthread_mutex_lock(&m_mutex);
     prepare();    
