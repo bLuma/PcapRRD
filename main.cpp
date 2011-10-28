@@ -52,9 +52,7 @@ int main(int argc, char** argv) {
     
     updater.start();
 
-    if (pl.setInterface(App::interface)) {
-        cout << "Capturing at: " << App::interface.c_str() << endl;
-    } else {
+    if (!pl.setInterface(App::interface)) {
         cerr << "Nelze nastavit interface!" << endl;
         pl.listInterfaces(NULL);
         return 9;
