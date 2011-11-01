@@ -75,6 +75,7 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
                 continue;
             }
         }
+        //cout << "Updater!" << endl;
         
         for (HostMapIterator it = updater.m_stats.hostBegin(); it != updater.m_stats.hostEnd(); it++) {
             string name = convertIpAddrBinaryToString(it->first);
