@@ -23,7 +23,7 @@ void callRRD(int argc, char** argv) {
     for (int i = 1; i < argc; i++)
         oss << " " << argv[i];
 
-    cout << oss.str().c_str() << endl;
+    //cout << oss.str().c_str() << endl;
     system(oss.str().c_str());
 }
 
