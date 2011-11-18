@@ -19,8 +19,12 @@
  * @return true, pokud existuje
  */
 bool fileExists(string name) {
-    string copy = name + RRD_FILE_EXT;
+    string copy = name; // + RRD_FILE_EXT;
     return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
+}
+
+void makeDir(string name) {
+    CreateDirectoryA(name.c_str(), NULL);
 }
 #else
 #include <sys/stat.h>
@@ -33,8 +37,12 @@ bool fileExists(string name) {
 bool fileExists(string name) {
     struct stat stats;
     
-    string copy = name + RRD_FILE_EXT;
+    string copy = name; // + RRD_FILE_EXT;
     return stat(copy.c_str(), &stats) == 0;
+}
+
+void makeDir(string name) {
+    mkdir(name.c_str(), 0775);
 }
 #endif
 
@@ -75,17 +83,20 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
                 continue;
             }
         }
-        //cout << "Updater!" << endl;
+#ifdef DEBUG_OUTPUT
+        cout << "Calling update process..." << endl;
+#endif
         
         for (HostMapIterator it = updater.m_stats.hostBegin(); it != updater.m_stats.hostEnd(); it++) {
             string name = convertIpAddrBinaryToString(it->first);
             StatsHolder localCopy = it->second;
             
             if (!fileExists(name)) {
-                RRD::create(name);
+                makeDir(name);
+                RRD::create(name + "/" + "prenosy-" + name);
             }
             
-            RRD::update(name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
+            RRD::update(name + "/" + "prenosy-" + name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }
 
         for (ServiceMapIterator it = updater.m_stats.serviceBegin(); it != updater.m_stats.serviceEnd(); it++) {
@@ -93,10 +104,11 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
             StatsHolder localCopy = it->second;
             
             if (!fileExists(name)) {
-                RRD::create(name);
+                makeDir(name);
+                RRD::create(name + "/" + "prenosy-" + name);
             }
             
-            RRD::update(name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
+            RRD::update(name + "/" + "prenosy-" + name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }      
         
         lastRun = now;

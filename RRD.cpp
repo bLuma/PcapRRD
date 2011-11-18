@@ -23,7 +23,9 @@ void callRRD(int argc, char** argv) {
     for (int i = 1; i < argc; i++)
         oss << " " << argv[i];
 
-    //cout << oss.str().c_str() << endl;
+#ifdef DEBUG_OUTPUT
+    cout << oss.str().c_str() << endl;
+#endif
     system(oss.str().c_str());
 }
 
@@ -62,12 +64,18 @@ bool RRD::create(string dbname/*, dbtype type */) {
     int argc = 0;
     const char* argv[MAX_ARGV];
     
+#ifdef WIN
+    dbname = "\"" + dbname + RRD_FILE_EXT + "\"";
+#endif
+    
     char filename[255];
     if (dbname.size() > 255 - 1 - 4)
         return false;
     
     strcpy(filename, dbname.c_str());
+#ifdef LINUX
     strcpy(filename + dbname.size(), RRD_FILE_EXT);
+#endif
     
     argv[argc++] = "rrd_create";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
@@ -77,6 +85,7 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = "--step";
     argv[argc++] = RRD_UPDATE_INTERVAL_STR;
     
+    //argv[argc++] = "DS:value:DERIVE:300:0:U";
     argv[argc++] = "DS:download:DERIVE:300:0:U";
     argv[argc++] = "DS:upload:DERIVE:300:0:U";
     
@@ -84,6 +93,10 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = "RRA:AVERAGE:0.5:4:10080";  // 1m - 7 dni
     argv[argc++] = "RRA:AVERAGE:0.5:20:105120"; // 5m - 1 rok
     argv[argc++] = "RRA:AVERAGE:0.5:240:35040"; // 1h - 4 roky   
+    //argv[argc++] = "RRA:MIN:0.5:4:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:MIN:0.5:240:35040";
+    //argv[argc++] = "RRA:MAX:0.5:4:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:MAX:0.5:240:35040";
     
     cleanRest(argc, argv);
     
@@ -93,6 +106,11 @@ bool RRD::create(string dbname/*, dbtype type */) {
     prepare();    
     int res = rrd_create(argc, const_cast<char**>(argv));
     pthread_mutex_unlock(&m_mutex);
+    
+#ifdef DEBUG_OUTPUT
+    cout << "rrd_create: " << res << endl;
+    if (!res) cout << "E:" << rrd_get_error() << endl;
+#endif
     
     return !res;
 }
@@ -110,12 +128,18 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
     int argc = 0;
     const char* argv[MAX_ARGV];
     
+#ifdef WIN    
+    dbname = "\"" + dbname + RRD_FILE_EXT + "\"";
+#endif
+    
     char filename[255], updatestr[512];
     if (dbname.size() > 255 - 1 - 4)
         return false;
     
     strcpy(filename, dbname.c_str());
+#ifdef LINUX
     strcpy(filename + dbname.size(), RRD_FILE_EXT);    
+#endif
     
     argv[argc++] = "rrd_update";
     //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
@@ -147,6 +171,11 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
     prepare();    
     int res = rrd_update(argc, const_cast<char**>(argv));
     pthread_mutex_unlock(&m_mutex);
+    
+#ifdef DEBUG_OUTPUT
+    cout << "rrd_update: " << res << endl;
+    if (!res) cout << "E:" << rrd_get_error() << endl;
+#endif    
     
     return !res; 
 }
