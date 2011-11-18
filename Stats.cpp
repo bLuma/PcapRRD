@@ -18,7 +18,12 @@ Stats* Stats::m_instance = NULL;
  */
 string convertIpAddrBinaryToString(IpAddrBinary addr) {
     ostringstream oss;
-    oss << "stat-" << addr;
+    //oss << "stat-" << addr;
+    oss << (addr & 0xFF) << ".";
+    oss << ((addr >> 8) & 0xFF) << ".";
+    oss << ((addr >> 16) & 0xFF) << ".";
+    oss << ((addr >> 24) & 0xFF);
+    
     return oss.str();
 }
 
@@ -30,7 +35,10 @@ string convertIpAddrBinaryToString(IpAddrBinary addr) {
  */
 string convertServiceAddrBinaryToString(ServiceAddrBinary addr) {
     ostringstream oss;
-    oss << "stat-" << addr.host << "-" << (addr.stype * 0xFFFF + addr.port);
+    //oss << "stat-" << addr.host << "-" << (addr.stype * 0xFFFF + addr.port);
+    oss << convertIpAddrBinaryToString(addr.host).c_str() << "-";
+    oss << (addr.stype == SR_TCP ? "TCP(" : "UDP(") << addr.port << ")";
+    
     return oss.str();
 }
 

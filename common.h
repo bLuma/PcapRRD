@@ -28,10 +28,16 @@ typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;
 
 #undef DEBUG
-#ifdef DEBUG
+
+#ifdef DEBUG_FULL
 #define DEBUG_PACKET(x) cerr << x << endl;
+#define DEBUG_OUTPUT
 #else
 #define DEBUG_PACKET(x)
+#endif
+
+#ifdef DEBUG
+#define DEBUG_OUTPUT
 #endif
 
 #ifdef WIN

@@ -44,7 +44,9 @@ int main(int argc, char** argv) {
     
 #ifdef LINUX
     /* Daemonize */
+#ifndef DEBUG_OUTPUT
     daemon(0, 0);
+#endif
     chdir("/var/pcaprrd/");
 #endif
     
@@ -60,7 +62,9 @@ int main(int argc, char** argv) {
         return 9;
     }
     pl.setFilter(App::pcapFilter);
-    
+#ifdef DEBUG_OUTPUT
+    cout << "Starting capture..." << endl;
+#endif
     if (!pl.startCapture())
         return 8;
     
