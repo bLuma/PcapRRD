@@ -27,17 +27,17 @@ using namespace std;
 typedef unsigned long IpAddrBinary;
 typedef unsigned long long uint64;
 
-#undef DEBUG
-
 #ifdef DEBUG_FULL
+#define DEBUG
 #define DEBUG_PACKET(x) cerr << x << endl;
-#define DEBUG_OUTPUT
 #else
 #define DEBUG_PACKET(x)
 #endif
 
 #ifdef DEBUG
-#define DEBUG_OUTPUT
+#define DEBUG_OUTPUT(x) cout << x << endl
+#else
+#define DEBUG_OUTPUT(x)
 #endif
 
 #ifdef WIN
@@ -52,6 +52,6 @@ typedef unsigned long long uint64;
 #endif
 #endif
 
-#include "config.h"
+#include "Config.h"
 
 #endif	/* COMMON_H */

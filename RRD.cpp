@@ -5,7 +5,9 @@
  * Created on 15. říjen 2011, 12:53
  */
 
+#ifndef WIN
 #include <rrd.h>
+#endif
 #include "RRD.h"
 #include <cstring>
 
@@ -23,15 +25,16 @@ void callRRD(int argc, char** argv) {
     for (int i = 1; i < argc; i++)
         oss << " " << argv[i];
 
-#ifdef DEBUG_OUTPUT
-    cout << oss.str().c_str() << endl;
-#endif
+    DEBUG_OUTPUT("callRRD: " << oss.str().c_str());
     system(oss.str().c_str());
 }
 
+const char* rrd_err = "";
+
 int rrd_create(int argc, char** argv) { callRRD(argc, argv); return 0; }
 int rrd_update(int argc, char** argv) { callRRD(argc, argv); return 0; }
-void rrd_clear_error() { }
+void rrd_clear_error()                { }
+const char* rrd_get_error()           { return rrd_err; }
 #endif
 
 /**
@@ -78,7 +81,6 @@ bool RRD::create(string dbname/*, dbtype type */) {
 #endif
     
     argv[argc++] = "rrd_create";
-    //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
     
     argv[argc++] = filename;
 
@@ -93,23 +95,21 @@ bool RRD::create(string dbname/*, dbtype type */) {
     argv[argc++] = "RRA:AVERAGE:0.5:4:10080";  // 1m - 7 dni
     argv[argc++] = "RRA:AVERAGE:0.5:20:105120"; // 5m - 1 rok
     argv[argc++] = "RRA:AVERAGE:0.5:240:35040"; // 1h - 4 roky   
-    //argv[argc++] = "RRA:MIN:0.5:4:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:MIN:0.5:4:10080";
     argv[argc++] = "RRA:MIN:0.5:240:35040";
-    //argv[argc++] = "RRA:MAX:0.5:4:10080";  // 1m - 7 dni
+    argv[argc++] = "RRA:MAX:0.5:4:10080";
     argv[argc++] = "RRA:MAX:0.5:240:35040";
     
     cleanRest(argc, argv);
     
-    //cout << "RRD Create" << endl;
-        
     pthread_mutex_lock(&m_mutex);
     prepare();    
     int res = rrd_create(argc, const_cast<char**>(argv));
     pthread_mutex_unlock(&m_mutex);
     
-#ifdef DEBUG_OUTPUT
+#ifdef DEBUG
     cout << "rrd_create: " << res << endl;
-    if (!res) cout << "E:" << rrd_get_error() << endl;
+    if (res) cout << "E:" << rrd_get_error() << endl;
 #endif
     
     return !res;
@@ -142,7 +142,7 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
 #endif
     
     argv[argc++] = "rrd_update";
-    //argv[argc++] = "~/PcapRRD/dist/Debug/GNU-Linux-x86/";
+    
     argv[argc++] = filename;
     
     ostringstream oss;
@@ -161,20 +161,14 @@ bool RRD::update(string dbname, time_t time, unsigned int cnt, unsigned int* dat
     argv[argc++] = updatestr;
     cleanRest(argc, argv);
     
-    //cout << "RRD Update" << endl;
-    /*for (int i = 0; i < argc; i++) {
-        cout << argv[i] << " ";
-    }
-    cout << endl;*/
-        
     pthread_mutex_lock(&m_mutex);
     prepare();    
     int res = rrd_update(argc, const_cast<char**>(argv));
     pthread_mutex_unlock(&m_mutex);
     
-#ifdef DEBUG_OUTPUT
+#ifdef DEBUG
     cout << "rrd_update: " << res << endl;
-    if (!res) cout << "E:" << rrd_get_error() << endl;
+    if (res) cout << "E:" << rrd_get_error() << endl;
 #endif    
     
     return !res; 

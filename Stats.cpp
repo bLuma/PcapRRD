@@ -33,11 +33,12 @@ string convertIpAddrBinaryToString(IpAddrBinary addr) {
  * @param addr L4 adresa
  * @return usporne textove vyjadreni adresy
  */
-string convertServiceAddrBinaryToString(ServiceAddrBinary addr) {
+string convertServiceAddrBinaryToString(const ServiceAddrBinary& addr) {
     ostringstream oss;
     //oss << "stat-" << addr.host << "-" << (addr.stype * 0xFFFF + addr.port);
-    oss << convertIpAddrBinaryToString(addr.host).c_str() << "-";
-    oss << (addr.stype == SR_TCP ? "TCP(" : "UDP(") << addr.port << ")";
+    //oss << convertIpAddrBinaryToString(addr.host).c_str() << "-";
+    //oss << (addr.stype == SR_TCP ? "TCP(" : "UDP(") << addr.port << ")";
+    oss << (addr.stype == SR_TCP ? "TCP_" : "UDP_") << addr.port;
     
     return oss.str();
 }

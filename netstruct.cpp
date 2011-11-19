@@ -30,14 +30,12 @@ IpAddrBinary convertStringToIpAddrBinary(string str) {
     for (int i = 0; i < 4; i++) {
         string token = str.substr(0, str.find('.'));
         istringstream ss(token);
+        
         ss >> tmp;
-        //cerr << tmp << " ... ";
-        //ip <<= 8;
         ip |= (tmp << ((i)*8));
         
         str = str.substr(str.find('.') + 1);
     }
     
-    //cerr << hex << ip;
     return ip;
 }

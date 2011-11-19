@@ -144,6 +144,7 @@ bool PacketLogger::startCapture() {
  * @param packetLogger instance packet loggeru
  */
 void* PacketLogger::captureThread(void* packetLogger) {
+    DEBUG_OUTPUT("PacketLogger thread ready.");
     PacketLogger* instance = reinterpret_cast<PacketLogger*>(packetLogger);
     int res;
     pcap_pkthdr* header;
@@ -157,6 +158,11 @@ void* PacketLogger::captureThread(void* packetLogger) {
         DEBUG_PACKET("@" << header->ts.tv_sec);
         PacketAnalyzer(header, data).analyze();
         DEBUG_PACKET("");
+    }
+    
+    if (res < 0 && !App::exit) {
+        DEBUG_OUTPUT("captureThread: crash? res=" << res);
+        App::exit = true;
     }
     
     return NULL;

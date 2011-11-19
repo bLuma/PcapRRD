@@ -132,8 +132,6 @@ void StatsAdapter::loadRules() {
         if (line[0] == '#')
             continue;
         
-        //cout << "F:" << line.c_str() << endl;
-        
         string type, address;
         iss >> type >> address;
         
@@ -148,7 +146,6 @@ void StatsAdapter::loadRules() {
             iss >> type >> sab.port;
             sab.stype = type == "TCP" ? SR_TCP : SR_UDP;
 
-            //cout << hex << sab.keyVal() << " <<<" << dec << endl;
             m_serviceFilter.insert(sab.keyVal());
             m_servicePorts.insert(sab.port);
         } else {
