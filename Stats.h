@@ -67,7 +67,7 @@ struct ServiceAddrBinary {
 };
 
 string convertIpAddrBinaryToString(IpAddrBinary addr);
-string convertServiceAddrBinaryToString(ServiceAddrBinary addr);
+string convertServiceAddrBinaryToString(const ServiceAddrBinary& addr);
 
 /// Mapy pro ulozeni statistik
 typedef unordered_map<IpAddrBinary, StatsHolder> HostMap;

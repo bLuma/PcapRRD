@@ -46,6 +46,9 @@ void makeDir(string name) {
 }
 #endif
 
+#define PATH_CONCAT(a, b) (a + "/" + b)
+#define COLLECTD_TYPE "prenosy-"
+
 RRDUpdater::RRDUpdater() : m_stats(Stats::instance()) {
 }
 
@@ -69,6 +72,7 @@ void RRDUpdater::start() {
  * @return nic
  */
 void* RRDUpdater::loggerThread(void* rrdAdapter) {
+    DEBUG_OUTPUT("RRDUpdater thread ready.");
     RRDUpdater& updater = *reinterpret_cast<RRDUpdater*>(rrdAdapter);
     time_t lastRun = time(NULL);
     
@@ -83,32 +87,39 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
                 continue;
             }
         }
-#ifdef DEBUG_OUTPUT
-        cout << "Calling update process..." << endl;
-#endif
+        DEBUG_OUTPUT("Calling update process at " << now);
         
         for (HostMapIterator it = updater.m_stats.hostBegin(); it != updater.m_stats.hostEnd(); it++) {
-            string name = convertIpAddrBinaryToString(it->first);
+            string hostName = convertIpAddrBinaryToString(it->first);
+            string realFilename = PATH_CONCAT(hostName, COLLECTD_TYPE + hostName);
             StatsHolder localCopy = it->second;
             
-            if (!fileExists(name)) {
-                makeDir(name);
-                RRD::create(name + "/" + "prenosy-" + name);
+            if (!fileExists(hostName)) {
+                makeDir(hostName);
             }
             
-            RRD::update(name + "/" + "prenosy-" + name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
+            if (!fileExists(realFilename + RRD_FILE_EXT)) {
+                RRD::create(realFilename);
+            }
+            
+            RRD::update(realFilename, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }
 
         for (ServiceMapIterator it = updater.m_stats.serviceBegin(); it != updater.m_stats.serviceEnd(); it++) {
-            string name = convertServiceAddrBinaryToString(it->first);
+            string hostName = convertIpAddrBinaryToString(it->first.host);
+            string serviceName = convertServiceAddrBinaryToString(it->first);
+            string realFilename = PATH_CONCAT(hostName, COLLECTD_TYPE + serviceName);
             StatsHolder localCopy = it->second;
             
-            if (!fileExists(name)) {
-                makeDir(name);
-                RRD::create(name + "/" + "prenosy-" + name);
+            if (!fileExists(hostName)) {
+                makeDir(hostName);
             }
             
-            RRD::update(name + "/" + "prenosy-" + name, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
+            if (!fileExists(realFilename + RRD_FILE_EXT)) {
+                RRD::create(realFilename);
+            }
+            
+            RRD::update(realFilename, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }      
         
         lastRun = now;

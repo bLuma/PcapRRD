@@ -22,7 +22,7 @@ void loadConfig();
  * @param sig cislo signalu
  */
 void signalHandler(int sig) {
-    //cout << "exit!" << endl;
+    cout << "pcaprrd: Caught exit! Stopping..." << endl;
     App::exit = true;
 }
 
@@ -41,10 +41,11 @@ int main(int argc, char** argv) {
     /* Nacti konfiguraci */
     loadConfig();
     StatsAdapter::loadRules();
+    DEBUG_OUTPUT("main: Configration loaded.");
     
 #ifdef LINUX
     /* Daemonize */
-#ifndef DEBUG_OUTPUT
+#ifndef DEBUG
     daemon(0, 0);
 #endif
     chdir("/var/pcaprrd/");
@@ -62,9 +63,8 @@ int main(int argc, char** argv) {
         return 9;
     }
     pl.setFilter(App::pcapFilter);
-#ifdef DEBUG_OUTPUT
-    cout << "Starting capture..." << endl;
-#endif
+    DEBUG_OUTPUT("main: Starting capture.");
+    
     if (!pl.startCapture())
         return 8;
     

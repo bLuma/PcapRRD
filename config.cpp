@@ -50,7 +50,7 @@ void loadConfig() {
         
         trimRight(value);
         
-        //cout << field.c_str() << " " << value.c_str() << " #" << endl;
+        DEBUG_OUTPUT("loadConfig: " << field.c_str() << " = " << value.c_str());
         
         if (field == "interface")
             App::interface = value;
