@@ -14,8 +14,6 @@
 #include "StatsAdapter.h"
 #include "RRDUpdater.h"
 
-void loadConfig();
-
 /**
  * Zpracovani signalu.
  * 
@@ -44,11 +42,15 @@ int main(int argc, char** argv) {
     DEBUG_OUTPUT("main: Configration loaded.");
     
 #ifdef LINUX
-    /* Daemonize */
 #ifndef DEBUG
+    /* Daemonize */
     daemon(0, 0);
 #endif
-    chdir("/var/pcaprrd/");
+    
+    if (!fileExists(RRD_DB_PATH))
+        makeDir(RRD_DB_PATH);
+    
+    chdir(RRD_DB_PATH);
 #endif
     
     PacketLogger pl;
@@ -63,8 +65,8 @@ int main(int argc, char** argv) {
         return 9;
     }
     pl.setFilter(App::pcapFilter);
-    DEBUG_OUTPUT("main: Starting capture.");
     
+    DEBUG_OUTPUT("main: Starting capture.");
     if (!pl.startCapture())
         return 8;
     

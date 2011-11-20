@@ -47,10 +47,10 @@ typedef unsigned long long uint64;
 #endif
 
 #ifndef WIN
-#ifndef LINUX
 #define LINUX
 #endif
-#endif
+
+#define RRD_DB_PATH "/var/lib/pcaprrd/"
 
 #include "Config.h"
 

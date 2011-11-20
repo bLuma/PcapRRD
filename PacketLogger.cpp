@@ -122,6 +122,7 @@ bool PacketLogger::startCapture() {
     }
 
     if (!m_filter.empty()) {
+        DEBUG_OUTPUT("startCapture: compiling filter=" << m_filter.c_str());
         // TODO: bpf resource release?
         bpf_program bpf;
     
@@ -132,6 +133,7 @@ bool PacketLogger::startCapture() {
             return false;        
     }
 
+    DEBUG_OUTPUT("startCapture: pthread_create");
     if (pthread_create(&m_thread, NULL, &PacketLogger::captureThread, reinterpret_cast<void*>(this)) != 0)
         return false;
 
