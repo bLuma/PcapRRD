@@ -11,6 +11,9 @@
 #include "common.h"
 #include "Stats.h"
 
+#define PATH_CONCAT(a, b) (a + "/" + b)
+#define COLLECTD_TYPE "prenosy-"
+
 /**
  * Trida pro opakovane ukladani dat do RRD databazi.
  */

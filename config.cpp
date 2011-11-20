@@ -60,3 +60,40 @@ void loadConfig() {
     
     fs.close();
 }
+
+#ifdef WIN
+#include <windows.h>
+
+/**
+ * Zjistuje existuje-li soubor na disku
+ * 
+ * @param name jmeno souboru
+ * @return true, pokud existuje
+ */
+bool fileExists(string name) {
+    string copy = name; // + RRD_FILE_EXT;
+    return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
+}
+
+void makeDir(string name) {
+    CreateDirectoryA(name.c_str(), NULL);
+}
+#else
+#include <sys/stat.h>
+/**
+ * Zjistuje existuje-li soubor na disku
+ * 
+ * @param name jmeno souboru
+ * @return true, pokud existuje
+ */
+bool fileExists(string name) {
+    struct stat stats;
+    
+    string copy = name; // + RRD_FILE_EXT;
+    return stat(copy.c_str(), &stats) == 0;
+}
+
+void makeDir(string name) {
+    mkdir(name.c_str(), 0775);
+}
+#endif

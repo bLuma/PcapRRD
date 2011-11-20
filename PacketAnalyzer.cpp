@@ -116,7 +116,7 @@ void PacketAnalyzer::doL3() {
         // IPv6
         case PROTO_L2_IPV6: {
             DEBUG_PACKET("=== Ipv6 ===");
-            break;
+            return;
         }
         
         // Others...

@@ -9,46 +9,6 @@
 #include "RRDUpdater.h"
 #include "RRD.h"
 
-#ifdef WIN
-#include <windows.h>
-
-/**
- * Zjistuje existuje-li soubor na disku
- * 
- * @param name jmeno souboru
- * @return true, pokud existuje
- */
-bool fileExists(string name) {
-    string copy = name; // + RRD_FILE_EXT;
-    return GetFileAttributesA(copy.c_str()) != 0xFFFFFFFF;
-}
-
-void makeDir(string name) {
-    CreateDirectoryA(name.c_str(), NULL);
-}
-#else
-#include <sys/stat.h>
-/**
- * Zjistuje existuje-li soubor na disku
- * 
- * @param name jmeno souboru
- * @return true, pokud existuje
- */
-bool fileExists(string name) {
-    struct stat stats;
-    
-    string copy = name; // + RRD_FILE_EXT;
-    return stat(copy.c_str(), &stats) == 0;
-}
-
-void makeDir(string name) {
-    mkdir(name.c_str(), 0775);
-}
-#endif
-
-#define PATH_CONCAT(a, b) (a + "/" + b)
-#define COLLECTD_TYPE "prenosy-"
-
 RRDUpdater::RRDUpdater() : m_stats(Stats::instance()) {
 }
 
@@ -62,7 +22,18 @@ RRDUpdater::~RRDUpdater() {
  * Spusti aktualizacni vlakno.
  */
 void RRDUpdater::start() {
+    DEBUG_OUTPUT("RRDUpdater: pthread_create");
     pthread_create(&m_thread, NULL, &loggerThread, reinterpret_cast<void*>(this));
+}
+
+inline void checkAndCreateDBs(string hostName, string realFilename) {
+    if (!fileExists(hostName)) {
+        makeDir(hostName);
+    }
+
+    if (!fileExists(realFilename + RRD_FILE_EXT)) {
+        RRD::create(realFilename);
+    }
 }
 
 /**
@@ -94,13 +65,7 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
             string realFilename = PATH_CONCAT(hostName, COLLECTD_TYPE + hostName);
             StatsHolder localCopy = it->second;
             
-            if (!fileExists(hostName)) {
-                makeDir(hostName);
-            }
-            
-            if (!fileExists(realFilename + RRD_FILE_EXT)) {
-                RRD::create(realFilename);
-            }
+            checkAndCreateDBs(hostName, realFilename);
             
             RRD::update(realFilename, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }
@@ -108,16 +73,10 @@ void* RRDUpdater::loggerThread(void* rrdAdapter) {
         for (ServiceMapIterator it = updater.m_stats.serviceBegin(); it != updater.m_stats.serviceEnd(); it++) {
             string hostName = convertIpAddrBinaryToString(it->first.host);
             string serviceName = convertServiceAddrBinaryToString(it->first);
-            string realFilename = PATH_CONCAT(hostName, COLLECTD_TYPE + serviceName);
+            string realFilename = PATH_CONCAT(hostName, COLLECTD_TYPE + hostName + "-" + serviceName);
             StatsHolder localCopy = it->second;
             
-            if (!fileExists(hostName)) {
-                makeDir(hostName);
-            }
-            
-            if (!fileExists(realFilename + RRD_FILE_EXT)) {
-                RRD::create(realFilename);
-            }
+            checkAndCreateDBs(hostName, realFilename);
             
             RRD::update(realFilename, now, 2, reinterpret_cast<unsigned int*>(localCopy.statistics));
         }      

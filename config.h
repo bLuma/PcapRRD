@@ -20,5 +20,9 @@ namespace App {
     extern string pcapFilter;
 };
 
+void loadConfig();
+bool fileExists(string name);
+void makeDir(string name);
+
 #endif	/* CONFIG_H */
 
