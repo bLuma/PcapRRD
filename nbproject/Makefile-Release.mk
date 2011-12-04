@@ -34,15 +34,15 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Stats.o \
-	${OBJECTDIR}/RRD.o \
-	${OBJECTDIR}/PacketAnalyzer.o \
-	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/Config.o \
-	${OBJECTDIR}/RRDUpdater.o \
-	${OBJECTDIR}/PacketLogger.o \
-	${OBJECTDIR}/StatsAdapter.o \
-	${OBJECTDIR}/netstruct.o
+	${OBJECTDIR}/src/main.o \
+	${OBJECTDIR}/src/StatsAdapter.o \
+	${OBJECTDIR}/src/Config.o \
+	${OBJECTDIR}/src/PacketLogger.o \
+	${OBJECTDIR}/src/Stats.o \
+	${OBJECTDIR}/src/netstruct.o \
+	${OBJECTDIR}/src/PacketAnalyzer.o \
+	${OBJECTDIR}/src/RRD.o \
+	${OBJECTDIR}/src/RRDUpdater.o
 
 
 # C Compiler Flags
@@ -69,50 +69,50 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/pcaprrd ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/Stats.o: Stats.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/main.o: src/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/Stats.o Stats.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/main.o src/main.cpp
 
-${OBJECTDIR}/RRD.o: RRD.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/StatsAdapter.o: src/StatsAdapter.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRD.o RRD.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/StatsAdapter.o src/StatsAdapter.cpp
 
-${OBJECTDIR}/PacketAnalyzer.o: PacketAnalyzer.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/Config.o: src/Config.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketAnalyzer.o PacketAnalyzer.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/Config.o src/Config.cpp
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/PacketLogger.o: src/PacketLogger.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/PacketLogger.o src/PacketLogger.cpp
 
-${OBJECTDIR}/Config.o: Config.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/Stats.o: src/Stats.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/Config.o Config.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/Stats.o src/Stats.cpp
 
-${OBJECTDIR}/RRDUpdater.o: RRDUpdater.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/netstruct.o: src/netstruct.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/RRDUpdater.o RRDUpdater.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/netstruct.o src/netstruct.cpp
 
-${OBJECTDIR}/PacketLogger.o: PacketLogger.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/PacketAnalyzer.o: src/PacketAnalyzer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/PacketLogger.o PacketLogger.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/PacketAnalyzer.o src/PacketAnalyzer.cpp
 
-${OBJECTDIR}/StatsAdapter.o: StatsAdapter.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/RRD.o: src/RRD.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/StatsAdapter.o StatsAdapter.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/RRD.o src/RRD.cpp
 
-${OBJECTDIR}/netstruct.o: netstruct.cpp 
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/src/RRDUpdater.o: src/RRDUpdater.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/netstruct.o netstruct.cpp
+	$(COMPILE.cc) -O2 -DDEBUG -DWIN -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/RRDUpdater.o src/RRDUpdater.cpp
 
 # Subprojects
 .build-subprojects:

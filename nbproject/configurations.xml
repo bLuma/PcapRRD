@@ -4,15 +4,15 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>Config.h</itemPath>
-      <itemPath>PacketAnalyzer.h</itemPath>
-      <itemPath>PacketLogger.h</itemPath>
-      <itemPath>RRD.h</itemPath>
-      <itemPath>RRDUpdater.h</itemPath>
-      <itemPath>Stats.h</itemPath>
-      <itemPath>StatsAdapter.h</itemPath>
-      <itemPath>common.h</itemPath>
-      <itemPath>netstruct.h</itemPath>
+      <itemPath>src/Config.h</itemPath>
+      <itemPath>src/PacketAnalyzer.h</itemPath>
+      <itemPath>src/PacketLogger.h</itemPath>
+      <itemPath>src/RRD.h</itemPath>
+      <itemPath>src/RRDUpdater.h</itemPath>
+      <itemPath>src/Stats.h</itemPath>
+      <itemPath>src/StatsAdapter.h</itemPath>
+      <itemPath>src/common.h</itemPath>
+      <itemPath>src/netstruct.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,15 +21,15 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Config.cpp</itemPath>
-      <itemPath>PacketAnalyzer.cpp</itemPath>
-      <itemPath>PacketLogger.cpp</itemPath>
-      <itemPath>RRD.cpp</itemPath>
-      <itemPath>RRDUpdater.cpp</itemPath>
-      <itemPath>Stats.cpp</itemPath>
-      <itemPath>StatsAdapter.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
-      <itemPath>netstruct.cpp</itemPath>
+      <itemPath>src/Config.cpp</itemPath>
+      <itemPath>src/PacketAnalyzer.cpp</itemPath>
+      <itemPath>src/PacketLogger.cpp</itemPath>
+      <itemPath>src/RRD.cpp</itemPath>
+      <itemPath>src/RRDUpdater.cpp</itemPath>
+      <itemPath>src/Stats.cpp</itemPath>
+      <itemPath>src/StatsAdapter.cpp</itemPath>
+      <itemPath>src/main.cpp</itemPath>
+      <itemPath>src/netstruct.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
